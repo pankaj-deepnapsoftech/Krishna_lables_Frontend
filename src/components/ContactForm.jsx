@@ -2,38 +2,35 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Send } from 'lucide-react';
+import { useFormik } from 'formik';
+import axiosHandler from '../config/Axioshandler';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    subject: '',
-    message: ''
-  });
-  const { toast } = useToast();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toast({
-      title: "🚧 Feature Coming Soon!",
-      description: "Contact form submission isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀",
-      variant: "default",
-      duration: 5000,
-    });
-  };
+
+ const formik = useFormik({
+  initialValues:{
+     name: '',
+     email: '',
+     phone: '',
+     company: '',
+     subject: '',
+     message: ''
+  },
+  onSubmit: async(value) =>{
+     try {
+       const res = await axiosHandler.post('/api/contacts/', value);
+      formik.resetForm()
+     } catch (error) {
+      console.log(error)
+     }
+  }
+ })
+
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={formik.handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
@@ -43,8 +40,8 @@ const ContactForm = () => {
             type="text"
             name="name"
             id="name"
-            value={formData.name}
-            onChange={handleInputChange}
+            value={formik.values.name}
+            onChange={formik.handleChange}
             required
             className="form-input w-full px-4 py-3"
             placeholder="Your full name"
@@ -58,8 +55,8 @@ const ContactForm = () => {
             type="email"
             name="email"
             id="email"
-            value={formData.email}
-            onChange={handleInputChange}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             required
             className="form-input w-full px-4 py-3"
             placeholder="your@email.com"
@@ -76,8 +73,8 @@ const ContactForm = () => {
             type="tel"
             name="phone"
             id="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
+            value={formik.values.phone}
+            onChange={formik.handleChange}
             className="form-input w-full px-4 py-3"
             placeholder="+91 XXXXX XXXXX"
           />
@@ -90,8 +87,8 @@ const ContactForm = () => {
             type="text"
             name="company"
             id="company"
-            value={formData.company}
-            onChange={handleInputChange}
+            value={formik.values.company}
+            onChange={formik.handleChange}
             className="form-input w-full px-4 py-3"
             placeholder="Your company name"
           />
@@ -105,8 +102,8 @@ const ContactForm = () => {
         <select
           name="subject"
           id="subject"
-          value={formData.subject}
-          onChange={handleInputChange}
+          value={formik.values.subject}
+          onChange={formik.handleChange}
           required
           className="form-input w-full px-4 py-3"
         >
@@ -127,8 +124,8 @@ const ContactForm = () => {
         <textarea
           name="message"
           id="message"
-          value={formData.message}
-          onChange={handleInputChange}
+          value={formik.values.message}
+          onChange={formik.handleChange}
           required
           rows={5}
           className="form-input w-full px-4 py-3 resize-none"

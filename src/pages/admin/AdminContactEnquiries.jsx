@@ -1,5 +1,5 @@
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Mail, Eye, MessageCircle, ArchiveX } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,12 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from '@/lib/utils';
+import axiosHandler from '../../config/Axioshandler';
+import { useEffect, useState } from 'react';
 
-const contactEnquiriesData = [
-  { id: 1, name: "General Inquiry Co.", email: "info@general.com", subject: "Partnership Proposal", message: "We would like to discuss a potential partnership...", date: "2025-06-17", status: "New" },
-  { id: 2, name: "Feedback Giver", email: "feedback@example.com", subject: "Website Feedback", message: "Love the new design! One small suggestion...", date: "2025-06-16", status: "Read" },
-  { id: 3, name: "Press Contact", email: "media@news.com", subject: "Media Enquiry", message: "Requesting an interview with your CEO.", date: "2025-06-15", status: "Replied" },
-];
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -33,17 +30,12 @@ const tableRowVariants = {
   }),
 };
 
-const getStatusClass = (status) => {
-  switch (status) {
-    case 'New': return 'status-new';
-    case 'Read': return 'status-read';
-    case 'Replied': return 'status-replied';
-    default: return 'text-muted-foreground bg-muted';
-  }
-};
+
+
 
 const AdminContactEnquiries = () => {
   const { toast } = useToast();
+  const [ContactData, setContactData] = useState([])
 
   const handleActionClick = (action, id) => {
     toast({
@@ -52,6 +44,45 @@ const AdminContactEnquiries = () => {
     });
   };
 
+
+  const GetContactData = async () => {
+    try {
+      const res = await axiosHandler.get("/api/contacts")
+      console.log(res?.data)
+      setContactData(res.data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  
+const handleDelete = async(_id) =>{
+try {
+  if(window.confirm("are you sure you want to delete this message? ")){
+    const res = await axiosHandler.delete(`/api/contacts/${_id}`)
+    GetContactData();
+  }
+} catch (error) {
+  console.log(error)
+}
+}
+  
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'New': return 'status-new';
+      case 'Read': return 'status-read';
+      case 'Replied': return 'status-replied';
+      default: return 'text-muted-foreground bg-muted';
+    }
+  };
+
+
+
+  useEffect(() => {
+    GetContactData();
+  }, []);
+  
   return (
     <motion.div
       initial="initial"
@@ -87,7 +118,7 @@ const AdminContactEnquiries = () => {
               </TableHeader>
 
               <TableBody>
-                {contactEnquiriesData.map((enquiry, index) => (
+                {ContactData?.map((enquiry, index) => (
                   <motion.tr
                     key={enquiry.id}
                     custom={index}
@@ -107,13 +138,12 @@ const AdminContactEnquiries = () => {
                     <TableCell className="text-foreground max-w-[180px] truncate py-4 pr-2">
                       {enquiry.subject}
                     </TableCell>
-
                     <TableCell className="text-muted-foreground hidden md:table-cell text-xs max-w-xs truncate py-4 pr-2">
                       {enquiry.message}
                     </TableCell>
 
                     <TableCell className="text-muted-foreground text-sm py-4 pr-2">
-                      {enquiry.date}
+                      {enquiry.dateAdded}
                     </TableCell>
 
                     <TableCell className="py-4 pr-2">
@@ -133,7 +163,7 @@ const AdminContactEnquiries = () => {
                           variant="ghost"
                           size="icon"
                           className="text-primary hover:text-accent hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('View', enquiry.id)}
+                          // onClick={() => handleActionClick('View', enquiry.id)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -142,7 +172,7 @@ const AdminContactEnquiries = () => {
                           variant="ghost"
                           size="icon"
                           className="text-purple-500 hover:text-purple-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('Reply', enquiry.id)}
+                          onClick={() => handleActionClick('Reply', enquiry._id)}
                         >
                           <MessageCircle className="h-4 w-4" />
                         </Button>
@@ -151,7 +181,7 @@ const AdminContactEnquiries = () => {
                           variant="ghost"
                           size="icon"
                           className="text-destructive hover:text-red-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('Delete', enquiry.id)}
+                          onClick={() => handleDelete( enquiry._id)}
                         >
                           <ArchiveX className="h-4 w-4" />
                         </Button>
@@ -163,7 +193,7 @@ const AdminContactEnquiries = () => {
             </Table>
 
           </div>
-          {contactEnquiriesData.length === 0 && (
+          {ContactData?.length === 0 && (
             <p className="text-center text-muted-foreground py-8">No contact enquiries found.</p>
           )}
         </CardContent>

@@ -231,7 +231,7 @@ const AdminManageProducts = () => {
                   </TableCell>
                   <TableCell>{product.name}</TableCell>
                   <TableCell className="hidden md:table-cell">{product.category}</TableCell>
-                  <TableCell className="hidden lg:table-cell text-center">${product.price || 'N/A'}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-center">{product.price || 'N/A'}</TableCell>
                   <TableCell className="hidden lg:table-cell text-center">
                     <Button
                       variant="ghost"
