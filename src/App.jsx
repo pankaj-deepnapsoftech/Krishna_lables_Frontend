@@ -1,0 +1,68 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Home from '@/pages/Home';
+import Products from '@/pages/Products';
+import About from '@/pages/About';
+import Contact from '@/pages/Contact';
+import Blog from '@/pages/Blog';
+import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton';
+import AdminLayout from '@/components/admin/AdminLayout';
+import DashboardOverview from '@/pages/admin/DashboardOverview';
+import AdminQuickQuotes from '@/pages/admin/AdminQuickQuotes';
+import AdminProductQuotes from '@/pages/admin/AdminProductQuotes';
+import AdminHelpEnquiries from '@/pages/admin/AdminHelpEnquiries';
+import AdminContactEnquiries from '@/pages/admin/AdminContactEnquiries';
+// import AdminAddProduct from '@/pages/admin/AdminAddProduct';
+import AdminManageProducts from '@/pages/admin/AdminManageProducts';
+import SingIn from './components/Auth/SingIn';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Frontend Routes */}
+        <Route
+          path="/*"
+          element={
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-poppins">
+              <Header />
+              <main>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="*" element={<Navigate to="/" replace />} /> {/* Catch-all for frontend */}
+                </Routes>
+              </main>
+              <Footer />
+              <FloatingWhatsAppButton />
+              <Toaster />
+            </div>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<DashboardOverview />} />
+          <Route path="quick-quotes" element={<AdminQuickQuotes />} />
+          <Route path="product-quotes" element={<AdminProductQuotes />} />
+          <Route path="help-enquiries" element={<AdminHelpEnquiries />} />
+          <Route path="contact-enquiries" element={<AdminContactEnquiries />} />
+          {/* <Route path="add-product" element={<AdminAddProduct />} /> */}
+          <Route path="manage-products" element={<AdminManageProducts />} />
+          {/* Catch-all for admin section, redirects to admin dashboard */}
+          <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+        </Route>
+        <Route path="/signin" element={<SingIn />}></Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
