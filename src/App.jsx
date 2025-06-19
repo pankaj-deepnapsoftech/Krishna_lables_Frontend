@@ -18,6 +18,7 @@ import AdminContactEnquiries from '@/pages/admin/AdminContactEnquiries';
 // import AdminAddProduct from '@/pages/admin/AdminAddProduct';
 import AdminManageProducts from '@/pages/admin/AdminManageProducts';
 import SingIn from './components/Auth/SingIn';
+import AddBlog from './pages/admin/AddBlog';
 
 function App() {
   return (
@@ -54,12 +55,12 @@ function App() {
           <Route path="product-quotes" element={<AdminProductQuotes />} />
           <Route path="help-enquiries" element={<AdminHelpEnquiries />} />
           <Route path="contact-enquiries" element={<AdminContactEnquiries />} />
-          {/* <Route path="add-product" element={<AdminAddProduct />} /> */}
+          <Route path="add-blog" element={<AddBlog />} />
           <Route path="manage-products" element={<AdminManageProducts />} />
           {/* Catch-all for admin section, redirects to admin dashboard */}
           <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
         </Route>
-        <Route path="/signin" element={<SingIn />}></Route>
+        <Route path="/signin" element={<SingIn />} />
       </Routes>
     </Router>
   );

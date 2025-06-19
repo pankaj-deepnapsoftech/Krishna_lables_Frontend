@@ -12,7 +12,7 @@ const navItems = [
   { name: 'Product Quotes', icon: PackageSearch, path: '/admin/product-quotes' },
   { name: 'Help Enquiries', icon: HelpCircle, path: '/admin/help-enquiries' },
   { name: 'Contact Us', icon: Mail, path: '/admin/contact-enquiries' },
-  // { name: 'Add Product', icon: PlusSquare, path: '/admin/add-product' },
+  { name: 'Add Blog', icon: PlusSquare, path: '/admin/add-blog' },
   { name: 'Manage Products', icon: ListOrdered, path: '/admin/manage-products' },
   // Example items for chart section, can be removed if charts are only on dashboard
   // { name: 'Analytics', icon: BarChart3, path: '/admin/analytics' },

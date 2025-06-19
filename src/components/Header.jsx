@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Menu, X, Store, Tag, HeartHandshake as Handshake, MessageSquare as MessageSquareText, Users, FileText, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, X, Store, Tag, HeartHandshake as Handshake, MessageSquare as MessageSquareText, Users, FileText, Phone, ChevronLeft, ChevronRight, LogIn } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+
 import { Input } from '@/components/ui/input'; // Assuming Input component exists or will be created
 
 const Header = () => {
@@ -73,6 +74,13 @@ const Header = () => {
       icon: Phone,
       color: 'text-violet-600',
       action: () => navigate('/contact'),
+    },
+    {
+      name: 'Sign In',
+      path: '/signin',
+      icon: LogIn,
+      color: 'text-sky-600',
+      action: () => navigate('/signin'),
     },
   ];
 

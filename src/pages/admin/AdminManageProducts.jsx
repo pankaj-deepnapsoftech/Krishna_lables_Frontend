@@ -94,7 +94,7 @@ const AdminManageProducts = () => {
       dateAdded: editTable?.dateAdded || new Date().toISOString().split('T')[0],
     },
     enableReinitialize: true,
-    // validationSchema: productValidationSchema,
+    validationSchema: productValidationSchema,
     onSubmit: async (values, { resetForm }) => {
     
       try {
@@ -115,10 +115,10 @@ const AdminManageProducts = () => {
          const res = await axiosHandler.put(`/api/products/${values._id}`, values);
           console.log(values._id)
           GetProduct();
-          toast({ title: 'Product Updated', description: 'Changes saved.' });
+       
         } else {
           const res = await axiosHandler.post('/api/products/', formData);
-          toast({ title: 'Product Created', description: 'Successfully added.' });
+        
         }
 
         resetForm();
@@ -138,13 +138,19 @@ const AdminManageProducts = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    if (!files.length) return;
+
     const previews = files.map((file) => URL.createObjectURL(file));
-    const allFiles = [...productImages, ...files].slice(0, 5);
+    const allFiles = [...productImages, ...files].slice(0, 1);
 
     setProductImages(allFiles);
-    setImagePreviews(previews.slice(0, 5));
+    setImagePreviews(previews.slice(0, 1));
     formik.setFieldValue('images', allFiles);
+
+    
+    e.target.value = null;
   };
+  
 
   const removeImage = (idx) => {
     const imgs = [...productImages];
@@ -254,11 +260,11 @@ const AdminManageProducts = () => {
                       onClick={() => {
                         setShowForm(true);
                         setEditTable(product);
-                        // if (product.images?.length) {
-                        //   setProductImages([]);
-                        //   setImagePreviews(product.images);
-                        //   formik.setFieldValue('images', product.images);
-                        // }
+                        if (product.images?.length) {
+                          setProductImages([]);
+                          setImagePreviews(product.images);
+                          formik.setFieldValue('images', product.images);
+                        }
                       }}
                       variant="ghost"
                       size="icon"
@@ -313,7 +319,7 @@ const AdminManageProducts = () => {
               <Card className="flex-1 flex flex-col overflow-hidden">
                 <CardHeader className=" flex flex-row justify-between items-center border-b p-4">
                   <CardTitle>New Product Details</CardTitle>
-                  <Button variant="ghost" size="icon" onClick={() => setShowForm(false)}>
+                  <Button variant="ghost" size="icon" onClick={() => { setShowForm(false); formik.resetForm() }}>
                     <XCircle />
                   </Button>
                 </CardHeader>
@@ -321,22 +327,42 @@ const AdminManageProducts = () => {
                   <CardContent className="space-y-5">
                     <div>
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" name="name" value={formik.values.name} onChange={formik.handleChange} required />
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        
+                        className={cn({ 'border-red-500': formik.touched.name && formik.errors.name })}
+                      />
+                      {formik.touched.name && formik.errors.name && (
+                        <p className="text-xs text-red-500 mt-1">{formik.errors.name}</p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="category">Category</Label>
                       <Select
                         value={formik.values.category}
                         onValueChange={(val) => formik.setFieldValue('category', val)}
+                        onBlur={() => formik.setFieldTouched('category', true)}
                       >
-                        <SelectTrigger><SelectValue placeholder="Select Category" /></SelectTrigger>
+                        <SelectTrigger className={cn({ 'border-red-500': formik.touched.category && formik.errors.category })}>
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
                         <SelectContent>
                           {productCategories.map((cat) => (
-                            <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                            <SelectItem key={cat.value} value={cat.value}>
+                              {cat.label}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
+                      {formik.touched.category && formik.errors.category && (
+                        <p className="text-xs text-red-500 mt-1">{formik.errors.category}</p>
+                      )}
                     </div>
+
                     <div>
                       <Label htmlFor="shortDescription">Short Description</Label>
                       <Textarea
@@ -344,11 +370,16 @@ const AdminManageProducts = () => {
                         name="shortDescription"
                         value={formik.values.shortDescription}
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         maxLength={150}
-                        className="h-20"
-                        required
+                        className={cn("h-20", { 'border-red-500': formik.touched.shortDescription && formik.errors.shortDescription })}
+                        
                       />
+                      {formik.touched.shortDescription && formik.errors.shortDescription && (
+                        <p className="text-xs text-red-500 mt-1">{formik.errors.shortDescription}</p>
+                      )}
                     </div>
+
                     <div>
                       <Label htmlFor="longDescription">Long Description</Label>
                       <Textarea
@@ -357,8 +388,11 @@ const AdminManageProducts = () => {
                         value={formik.values.longDescription}
                         onChange={formik.handleChange}
                         className="h-28"
-                        required
+                        
                       />
+                       {formik.touched.longDescription && formik.errors.longDescription && (
+                        <p className="text-xs text-red-500 mt-1">{formik.errors.longDescription}</p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="price">Price</Label>
@@ -368,46 +402,63 @@ const AdminManageProducts = () => {
                         type="number"
                         value={formik.values.price}
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         step="0.01"
+                        className={cn({ 'border-red-500': formik.touched.price && formik.errors.price })}
                       />
+                      {formik.touched.price && formik.errors.price && (
+                        <p className="text-xs text-red-500 mt-1">{formik.errors.price}</p>
+                      )}
                     </div>
-                    <div>
-                      <Label>Product Images</Label>
-                      <div className="border-dashed border-2 p-4 rounded text-center">
-                        <UploadCloud className="mx-auto mb-2" />
+
+                    <div className="space-y-2">
+                      <Label className="block text-sm font-medium text-gray-700">Product Images</Label>
+
+                      <div className="relative border-2 border-dashed border-blue-400 rounded-lg p-6 flex flex-col items-center justify-center bg-blue-50 hover:bg-blue-100 transition-colors duration-300">
+                        <UploadCloud className="w-10 h-10 text-blue-500 mb-2" />
+                        <p className="text-sm text-gray-600 mb-1">Click or drag & drop up to <strong>1 image</strong></p>
+
                         <input
                           type="file"
                           multiple
                           accept="image/*"
                           onChange={handleImageUpload}
-                          disabled={productImages.length >= 5}
+                          disabled={productImages.length >= 1}
+                          className={cn(
+                            "absolute inset-0 opacity-0 cursor-pointer",
+                            productImages.length >= 1 && "cursor-not-allowed"
+                          )}
                         />
-                        <p>({productImages.length}/5)</p>
+
                       </div>
+
+                      <p className="text-xs text-gray-500">Only 1 image allowed. Recommended format: JPG, PNG. Max size: 2MB.</p>
+
                       {imagePreviews.length > 0 && (
-                        <div className="mt-2 grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3">
                           {imagePreviews.map((src, idx) => (
-                            <div key={idx} className="relative">
-                              <img src={src} className="rounded w-full aspect-square object-cover" alt="" />
+                            <div key={idx} className="relative group rounded-lg overflow-hidden border">
+                              <img src={src} alt="Preview" className="w-full h-32 object-cover" />
                               <button
                                 type="button"
                                 onClick={() => removeImage(idx)}
-                                className="absolute top-1 right-1 bg-destructive text-white rounded-full"
+                                className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                               >
-                                <XSquare />
+                                <XSquare className="w-4 h-4" />
                               </button>
                             </div>
                           ))}
                         </div>
                       )}
                     </div>
+
                   </CardContent>
                   <CardFooter className="flex justify-end gap-2 border-t p-4">
-                    <Button variant="outline" onClick={() => setShowForm(false)}>
+                    <Button variant="outline" onClick={() => { setShowForm(false); formik.resetForm()}}>
                       Cancel
                     </Button>
                     <Button type="submit" className="bg-primary text-white">
-                      <Save className="mr-1" /> Save Product
+                      <Save className="mr-1" /> {editTable ? "Update Product" : "Save Product"}
                     </Button>
                   </CardFooter>
                 </form>
