@@ -15,12 +15,15 @@ import AdminQuickQuotes from '@/pages/admin/AdminQuickQuotes';
 import AdminProductQuotes from '@/pages/admin/AdminProductQuotes';
 import AdminHelpEnquiries from '@/pages/admin/AdminHelpEnquiries';
 import AdminContactEnquiries from '@/pages/admin/AdminContactEnquiries';
-// import AdminAddProduct from '@/pages/admin/AdminAddProduct';
 import AdminManageProducts from '@/pages/admin/AdminManageProducts';
 import SingIn from './components/Auth/SingIn';
-import AddBlog from './pages/admin/AddBlog';
+import ManageBlog from './pages/admin/ManageBlog';
+import {  useAuthContext } from './Context/authcontext';
 
 function App() {
+
+  const { token } = useAuthContext()
+  
   return (
     <Router>
       <Routes>
@@ -48,18 +51,18 @@ function App() {
         />
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {token &&  <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<DashboardOverview />} />
           <Route path="quick-quotes" element={<AdminQuickQuotes />} />
           <Route path="product-quotes" element={<AdminProductQuotes />} />
           <Route path="help-enquiries" element={<AdminHelpEnquiries />} />
           <Route path="contact-enquiries" element={<AdminContactEnquiries />} />
-          <Route path="add-blog" element={<AddBlog />} />
+          <Route path="manage-blog" element={<ManageBlog />} />
           <Route path="manage-products" element={<AdminManageProducts />} />
           {/* Catch-all for admin section, redirects to admin dashboard */}
           <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
-        </Route>
+        </Route>}
         <Route path="/signin" element={<SingIn />} />
       </Routes>
     </Router>

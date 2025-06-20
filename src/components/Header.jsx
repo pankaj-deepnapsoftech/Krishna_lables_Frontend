@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
 import { Input } from '@/components/ui/input'; // Assuming Input component exists or will be created
+import {  useAuthContext } from '../Context/authcontext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const {token} = useAuthContext()
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
@@ -75,13 +77,21 @@ const Header = () => {
       color: 'text-violet-600',
       action: () => navigate('/contact'),
     },
-    {
-      name: 'Sign In',
-      path: '/signin',
-      icon: LogIn,
-      color: 'text-sky-600',
-      action: () => navigate('/signin'),
-    },
+    token
+      ? {
+        name: 'Dashboard',
+        path: '/admin',
+        icon: LogIn,
+        color: 'text-sky-600',
+        action: () => navigate('/admin'),
+      }
+      : {
+        name: 'Sign In',
+        path: '/signin',
+        icon: LogIn,
+        color: 'text-sky-600',
+        action: () => navigate('/signin'),
+      },
   ];
 
 
@@ -104,7 +114,7 @@ const Header = () => {
          // This case is for when "Our Product" is clicked while on /products page.
       }
     }
-    setIsMenuOpen(false);
+    setIsMenuOpen(false); 
   };
   
   useEffect(() => {

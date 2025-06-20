@@ -110,16 +110,21 @@ const AdminManageProducts = () => {
         productImages.forEach((file) => {
           formData.append('images', file);
         });
-
         if (editTable) {
-         const res = await axiosHandler.put(`/api/products/${values._id}`, values);
-          console.log(values._id)
-          GetProduct();
-       
+          const res = await axiosHandler.put(`/api/products/${values._id}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
         } else {
-          const res = await axiosHandler.post('/api/products/', formData);
-        
+          const res = await axiosHandler.post('/api/products/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
         }
+        
+        
 
         resetForm();
         setProductImages([]);
@@ -260,12 +265,13 @@ const AdminManageProducts = () => {
                       onClick={() => {
                         setShowForm(true);
                         setEditTable(product);
-                        if (product.images?.length) {
-                          setProductImages([]);
-                          setImagePreviews(product.images);
-                          formik.setFieldValue('images', product.images);
-                        }
+                      
+                     
+                        setImagePreviews(product.images); // Only for display
+                        setProductImages([]); // No uploaded file yet
+                        formik.setFieldValue('images', []); // Reset images field
                       }}
+                      
                       variant="ghost"
                       size="icon"
                       className="text-blue-600 hover:text-blue-600 hover:bg-transparent"

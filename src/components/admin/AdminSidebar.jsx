@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, MessageSquare as MessageSquareQuote, PackageSearch, HelpCircle, Mail, PlusSquare, ListOrdered, ChevronLeft, ChevronRight, BarChart3, PieChart as PieChartIcon, Activity } from 'lucide-react';
+import { LayoutDashboard, MessageSquare as MessageSquareQuote, PackageSearch, HelpCircle, Mail, PlusSquare, ListOrdered, ChevronLeft, ChevronRight, BarChart3, PieChart as PieChartIcon, Activity, LayoutList } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
 
@@ -12,7 +12,7 @@ const navItems = [
   { name: 'Product Quotes', icon: PackageSearch, path: '/admin/product-quotes' },
   { name: 'Help Enquiries', icon: HelpCircle, path: '/admin/help-enquiries' },
   { name: 'Contact Us', icon: Mail, path: '/admin/contact-enquiries' },
-  { name: 'Add Blog', icon: PlusSquare, path: '/admin/add-blog' },
+  { name: 'Manage Blog', icon: LayoutList, path: '/admin/manage-blog' },
   { name: 'Manage Products', icon: ListOrdered, path: '/admin/manage-products' },
   // Example items for chart section, can be removed if charts are only on dashboard
   // { name: 'Analytics', icon: BarChart3, path: '/admin/analytics' },

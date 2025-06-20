@@ -4,129 +4,48 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Filter, Grid, List, Search, Star, ArrowRight } from 'lucide-react';
 import { DialogContent } from '../components/ui/dialog';
+import axiosHandler from '../config/Axioshandler';
 
 const Products = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showForm, setShowForm] = useState(false)
+  const [showForm, setShowForm] = useState(false);
+  const [productData, setProductData] = useState([])
+  const [selectedProduct, setSelectedProduct] = useState('');
+
   const { toast } = useToast();
 
   const categories = [
     { id: 'all', name: 'All Products' },
-    { id: 'labels', name: 'Labels' },
-    { id: 'tags', name: 'Tags' },
-    { id: 'ribbons', name: 'Ribbons' },
-    { id: 'badges', name: 'Badges' },
-    { id: 'keyrings', name: 'Key Rings' }
+    { id: 'woven Labels', name: 'Woven Labels' },
+    { id: 'printed_labels', name: 'Printed Labels' },
+    { id: 'hang_tags', name: 'Hang Tags' },
+    { id: 'heat_transfer', name: 'Heat Transfer Labels' },
+    { id: 'other', name: 'Other Accessories' }
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: 'Woven Labels',
-      category: 'labels',
-      description: 'Premium quality woven labels with custom designs and superior durability',
-      features: ['Custom Designs', 'Fade Resistant', 'Soft Touch'],
-      rating: 4.9,
-      popular: true
-    },
-    {
-      id: 2,
-      name: 'Printed Labels',
-      category: 'labels',
-      description: 'High-resolution printed labels perfect for detailed graphics and text',
-      features: ['High Resolution', 'Vibrant Colors', 'Quick Turnaround'],
-      rating: 4.8,
-      popular: false
-    },
-    {
-      id: 3,
-      name: 'Designer Tags',
-      category: 'tags',
-      description: 'Elegant designer tags that add premium appeal to your products',
-      features: ['Luxury Finish', 'Custom Shapes', 'Premium Materials'],
-      rating: 4.9,
-      popular: true
-    },
-    {
-      id: 4,
-      name: 'Hang Tags',
-      category: 'tags',
-      description: 'Professional hang tags with various finishing options',
-      features: ['Multiple Sizes', 'Various Finishes', 'String Options'],
-      rating: 4.7,
-      popular: false
-    },
-    {
-      id: 5,
-      name: 'Fancy Ribbons',
-      category: 'ribbons',
-      description: 'Decorative ribbons for packaging and promotional purposes',
-      features: ['Satin Finish', 'Custom Colors', 'Various Widths'],
-      rating: 4.8,
-      popular: true
-    },
-    {
-      id: 6,
-      name: 'Grosgrain Ribbons',
-      category: 'ribbons',
-      description: 'Durable grosgrain ribbons with excellent texture and finish',
-      features: ['Textured Surface', 'Strong Hold', 'Color Fast'],
-      rating: 4.6,
-      popular: false
-    },
-    {
-      id: 7,
-      name: 'Fashion Badges',
-      category: 'badges',
-      description: 'Trendy fashion badges for apparel and accessories',
-      features: ['Modern Designs', 'Easy Application', 'Durable'],
-      rating: 4.8,
-      popular: true
-    },
-    {
-      id: 8,
-      name: 'Metal Badges',
-      category: 'badges',
-      description: 'Premium metal badges with superior finish and durability',
-      features: ['Metal Construction', 'Premium Finish', 'Long Lasting'],
-      rating: 4.9,
-      popular: false
-    },
-    {
-      id: 9,
-      name: 'Promotional Key Rings',
-      category: 'keyrings',
-      description: 'Custom key rings perfect for promotional and branding purposes',
-      features: ['Custom Branding', 'Durable Materials', 'Various Styles'],
-      rating: 4.7,
-      popular: true
-    },
-    {
-      id: 10,
-      name: 'Metal Key Rings',
-      category: 'keyrings',
-      description: 'High-quality metal key rings with premium finish',
-      features: ['Metal Construction', 'Engraving Options', 'Premium Quality'],
-      rating: 4.8,
-      popular: false
+
+
+  const GetProduct = async () => {
+    try {
+      const res = await axiosHandler.get('/api/products/');
+      console.log(res?.data)
+      setProductData(res.data || []);
+    } catch (err) {
+      console.error('GetProduct error:', err);
     }
-  ];
+  };
 
-  const filteredProducts = products.filter(product => {
+
+
+  const filteredProducts = productData.filter(product => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const handleViewMore = (productName) => {
-    toast({
-      title: "🚧 Feature Coming Soon!",
-      description: `Detailed view for ${productName} isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀`,
-    });
-  };
 
   const handleFilter = (category) => {
     setSelectedCategory(category);
@@ -149,6 +68,10 @@ const Products = () => {
       document.body.style.overflow = '';
     };
   }, [showForm]);
+
+  useEffect(()=>{
+    GetProduct()
+  },[])
 
   return (
     <div className="pt-24 md:pt-28 min-h-screen bg-gradient-to-br from-slate-50 to-blue-100">
@@ -190,13 +113,15 @@ const Products = () => {
                   key={category.id}
                   onClick={() => handleFilter(category.id)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 font-poppins text-sm ${selectedCategory === category.id
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
                     }`}
                 >
                   {category.name}
                 </button>
               ))}
+
+           
             </div>
 
             <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
@@ -230,61 +155,67 @@ const Products = () => {
               }`}>
               {filteredProducts.map((product, index) => (
                 <motion.div
-                  key={product.id}
+                  key={product.id || index}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className={`product-card group ${viewMode === 'list' ? 'flex flex-col md:flex-row items-center' : ''
+                  className={`group bg-white rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-200 overflow-hidden ${viewMode === 'list' ? 'flex flex-col md:flex-row items-center' : ''
                     }`}
                 >
-                  <div className={`relative overflow-hidden ${viewMode === 'list' ? 'md:w-1/3 flex-shrink-0 h-48 md:h-full' : 'h-56'
-                    }`}>
+                  <div
+                    className={`relative overflow-hidden ${viewMode === 'list' ? 'md:w-1/3 h-48 md:h-full' : 'h-60'
+                      }`}
+                  >
                     <img
+                      src={product.images || '/placeholder.jpg'}
+                      alt={product.name || 'Product image'}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      alt={`${product.name} - Premium quality textile accessory`}
-                      src="https://images.unsplash.com/photo-1618749126494-52dd55a238bc" />
+                    />
 
                     {product.popular && (
-                      <div className="absolute top-3 left-3 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-semibold flex items-center shadow-md font-poppins">
+                      <div className="absolute top-3 left-3 bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold flex items-center shadow-md font-poppins">
                         <Star className="w-3 h-3 mr-1 fill-current" />
                         Popular
                       </div>
                     )}
 
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold flex items-center shadow-md font-poppins text-dark-gray">
-                      <Star className="w-3 h-3 mr-1 text-yellow-500 fill-current" />
-                      {product.rating}
-                    </div>
                   </div>
 
-                  <div className={`p-6 flex flex-col flex-grow ${viewMode === 'list' ? 'md:w-2/3' : ''}`}>
-                    <h3 className={`text-xl font-semibold ${paragraphClasses} mb-2 group-hover:text-blue-600 transition-colors`}>
+                  <div
+                    className={`p-5 flex flex-col flex-grow ${viewMode === 'list' ? 'md:w-2/3' : ''
+                      }`}
+                  >
+                    <h3 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">
                       {product.name}
                     </h3>
-                    <p className={`${paragraphClasses} text-sm mb-4 leading-relaxed flex-grow`}>
-                      {product.description}
+
+                    <p className="text-xl text-blue-600 font-bold mb-2">
+                      ₹{product.price}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {product.features.map((feature, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium font-poppins"
-                        >
-                          {feature}
-                        </span>
-                      ))}
+                    <p className="text-sm text-gray-600 leading-relaxed mb-3 flex-grow line-clamp-3">
+                      {product.longDescription}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium font-poppins">
+                        {product.shortDescription}
+                      </span>
                     </div>
 
                     <Button
-                      onClick={() => setShowForm(true)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 transition-colors group font-poppins mt-auto"
+                      onClick={() => {
+                        setSelectedProduct(product.name);
+                        setShowForm(true);
+                      }}
+                      className="w-full bg-blue-600 hover:bg-blue-700 transition-colors font-poppins"
                     >
                       Get Quote
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </motion.div>
+             
               ))}
             </div>
           ) : (
@@ -402,6 +333,7 @@ const Products = () => {
                 id="product"
                 name="product"
                 readOnly
+                value={selectedProduct}
                 defaultValue="Custom Labels"
                 className="w-full px-4 py-2 border rounded-md border-gray-300 bg-gray-100 cursor-not-allowed"
               />

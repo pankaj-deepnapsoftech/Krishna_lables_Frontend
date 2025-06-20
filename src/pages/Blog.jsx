@@ -9,20 +9,23 @@ const Blog = () => {
 
 
 
-const getData = async ()=>{
+  const getData = async () => {
 
- try {
-   const res = await axiosHandler.get("/api/blogs")
-   setBlogData(res?.data)
- } catch (error) {
-  console.log(error)
- }
-}
+    try {
+      const res = await axiosHandler.get("/api/blogs")
+      setBlogData(res?.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-useEffect(()=>{
-  getData()
-},[])
-console.log(blogData)
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -30,7 +33,7 @@ console.log(blogData)
       transition={{ duration: 0.5 }}
       className="container mx-auto px-4 py-16 mt-20 min-h-[calc(100vh-20rem)]"
     >
-      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Latest Blogs</h1>
+      <h1 className="text-[45px] font-bold text-center mb-12 text-gray-500">Latest <span className='text-yellow-400'>Blogs</span></h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {blogData?.map((blog, index) => (
@@ -69,14 +72,7 @@ console.log(blogData)
               </div>
             </div>
 
-            {/* Delete Button */}
-            <button
-              onClick={() => handleDelete(blog._id)}
-              className="absolute top-4 right-4 bg-red-100 text-red-600 hover:bg-red-600 hover:text-white p-2 rounded-full transition"
-              title="Delete Blog"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+
           </div>
         ))}
       </div>
