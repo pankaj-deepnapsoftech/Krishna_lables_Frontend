@@ -18,11 +18,13 @@ import { useToast } from "@/components/ui/use-toast";
 const AdminNavbar = ({ toggleSidebar, isSidebarOpen }) => {
   const { toast } = useToast();
   const navigate = useNavigate()
-  const handleLogout =  () =>{
-   localStorage.removeItem('tk')
-    navigate('/signin')
-
+const handleLogout = () => {
+    localStorage.removeItem('tk');
+    navigate('/signin');
+    toast.success("Logout Successful");
   }
+
+
 
 
   const handleSettings = () => {

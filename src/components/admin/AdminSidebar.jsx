@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { LayoutDashboard, MessageSquare as MessageSquareQuote, PackageSearch, HelpCircle, Mail, PlusSquare, ListOrdered, ChevronLeft, ChevronRight, BarChart3, PieChart as PieChartIcon, Activity, LayoutList } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
+import { toast } from 'react-toastify';
 
 const navItems = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
@@ -52,9 +53,11 @@ const AdminSidebar = ({ isOpen, toggleSidebar, className }) => {
  const navigate = useNavigate()
 
   const handleLogout = () => {
-    localStorage.removeItem('tk')
-    navigate('/signin')
+    localStorage.removeItem('tk');
+    navigate('/signin');
+    toast.success("Logout Successful");
   }
+
 
   return (
     <motion.aside

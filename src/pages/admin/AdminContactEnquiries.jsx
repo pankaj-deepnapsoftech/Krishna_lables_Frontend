@@ -36,16 +36,10 @@ const tableRowVariants = {
 
 
 const AdminContactEnquiries = () => {
-  const { toast } = useToast();
   const [ContactData, setContactData] = useState([])
   const [page, setPage] = useState(1)
   const { token } = useAuthContext()
-  const handleActionClick = (action, id) => {
-    toast({
-      title: `${action} Clicked`,
-      description: `🚧 Action '${action}' for Contact Enquiry ID ${id} isn't implemented yet. You can request it! 🚀`,
-    });
-  };
+
 
 
   const GetContactData = async () => {
@@ -64,10 +58,12 @@ const AdminContactEnquiries = () => {
     try {
       if (window.confirm("are you sure you want to delete this message? ")) {
         const res = await axiosHandler.delete(`/api/contacts/${_id}`)
+        toast.success(res?.data?.message)
         GetContactData();
       }
     } catch (error) {
       console.log(error)
+      toast.error(error?.message)
     }
   }
 

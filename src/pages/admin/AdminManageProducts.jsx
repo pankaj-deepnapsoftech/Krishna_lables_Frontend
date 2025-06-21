@@ -198,6 +198,8 @@ const AdminManageProducts = () => {
   }
   }, [page,token]);
 
+  console.log(ProductData)
+
   return (
     <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" className="space-y-6">
 

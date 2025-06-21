@@ -101,7 +101,7 @@ const ManageBlog = () => {
         }
     }, [page, token])
 
-
+ console.log(blogData)
     return (
         <section className=" bg-gray-50">
             <div className="w-full px-6 pb-8">
@@ -363,6 +363,12 @@ const ManageBlog = () => {
                         </form>
                     </div>
                 </div>
+                {blogData?.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">
+                        No blog data found.
+                    </p>
+                )}
+
             </div>
             <Paginations page={page} setPage={setPage} hasNextPage={blogData?.length === 10} />
         </section>
