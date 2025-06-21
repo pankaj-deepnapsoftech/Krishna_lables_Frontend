@@ -1,7 +1,7 @@
 
 
 import { motion } from 'framer-motion';
-import { Mail, Eye, MessageCircle, ArchiveX } from 'lucide-react';
+import { Mail, Eye, MessageCircle, ArchiveX, Archive } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { cn } from '@/lib/utils';
 import axiosHandler from '../../config/Axioshandler';
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../Context/authcontext';
+import Paginations from '../Paginations';
 
 
 const pageVariants = {
@@ -36,7 +38,8 @@ const tableRowVariants = {
 const AdminContactEnquiries = () => {
   const { toast } = useToast();
   const [ContactData, setContactData] = useState([])
-
+  const [page, setPage] = useState(1)
+  const { token } = useAuthContext()
   const handleActionClick = (action, id) => {
     toast({
       title: `${action} Clicked`,
@@ -47,7 +50,7 @@ const AdminContactEnquiries = () => {
 
   const GetContactData = async () => {
     try {
-      const res = await axiosHandler.get("/api/contacts")
+      const res = await axiosHandler.get(`/api/contacts?page=${page}&limit=10`)
       console.log(res?.data)
       setContactData(res.data)
 
@@ -56,18 +59,18 @@ const AdminContactEnquiries = () => {
     }
   }
 
-  
-const handleDelete = async(_id) =>{
-try {
-  if(window.confirm("are you sure you want to delete this message? ")){
-    const res = await axiosHandler.delete(`/api/contacts/${_id}`)
-    GetContactData();
+
+  const handleDelete = async (_id) => {
+    try {
+      if (window.confirm("are you sure you want to delete this message? ")) {
+        const res = await axiosHandler.delete(`/api/contacts/${_id}`)
+        GetContactData();
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-} catch (error) {
-  console.log(error)
-}
-}
-  
+
   const getStatusClass = (status) => {
     switch (status) {
       case 'New': return 'status-new';
@@ -80,9 +83,11 @@ try {
 
 
   useEffect(() => {
-    GetContactData();
-  }, []);
-  
+    if (token) {
+      GetContactData(page);
+    }
+  }, [token, page]);
+
   return (
     <motion.div
       initial="initial"
@@ -141,10 +146,7 @@ try {
                     <TableCell className="text-muted-foreground hidden md:table-cell text-xs max-w-xs truncate py-4 pr-2">
                       {enquiry.message}
                     </TableCell>
-
-                    <TableCell className="text-muted-foreground text-sm py-4 pr-2">
-                      {enquiry.dateAdded}
-                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm py-4 px-4 whitespace-nowrap">{new Date(enquiry.dateAdded).toLocaleDateString()}</TableCell>
 
                     <TableCell className="py-4 pr-2">
                       <span
@@ -158,32 +160,14 @@ try {
                     </TableCell>
 
                     <TableCell className="text-right py-4 pl-2">
-                      <div className="flex justify-end items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-primary hover:text-accent hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          // onClick={() => handleActionClick('View', enquiry.id)}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-purple-500 hover:text-purple-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('Reply', enquiry._id)}
-                        >
-                          <MessageCircle className="h-4 w-4" />
-                        </Button>
-
+                      <div className="flex justify-center items-center gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
                           className="text-destructive hover:text-red-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleDelete( enquiry._id)}
+                          onClick={() => handleDelete(enquiry._id)}
                         >
-                          <ArchiveX className="h-4 w-4" />
+                          <Archive size={20} />
                         </Button>
                       </div>
                     </TableCell>
@@ -198,6 +182,7 @@ try {
           )}
         </CardContent>
       </Card>
+      <Paginations page={page} setPage={setPage} hasNextPage={ContactData?.length === 10} />
     </motion.div>
   );
 };

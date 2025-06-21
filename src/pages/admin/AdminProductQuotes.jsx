@@ -1,18 +1,17 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PackageSearch, Eye, Edit, Trash2 } from 'lucide-react';
+import { PackageSearch, Eye, Edit, Trash2, Archive } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from '@/lib/utils';
+import axiosHandler from '../../config/Axioshandler';
+import { useAuthContext } from '../../Context/authcontext';
+import Paginations from '../Paginations';
 
-const productQuotesData = [
-  { id: 1, productName: "Woven Labels - Model X", quantity: 5000, customerName: "Fashion Co.", email: "orders@fashionco.com", date: "2025-06-17", status: "Pending" },
-  { id: 2, productName: "Printed Satin Labels", quantity: 10000, customerName: "Luxury Brands Inc.", email: "procurement@luxury.com", date: "2025-06-15", status: "Approved" },
-  { id: 3, productName: "Custom Hang Tags", quantity: 2000, customerName: "Boutique Store", email: "info@boutiquestore.com", date: "2025-06-14", status: "Shipped" },
-];
+
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -44,13 +43,54 @@ const getStatusClass = (status) => {
 
 const AdminProductQuotes = () => {
   const { toast } = useToast();
-
-  const handleActionClick = (action, id) => {
-    toast({
-      title: `${action} Clicked`,
-      description: `🚧 Action '${action}' for Product Quote ID ${id} isn't implemented yet. You can request it! 🚀`,
-    });
+  const [productQuoteData, setProductQuoteData] = useState([])
+  const { token } = useAuthContext()
+  const [page, setPage] = useState(1)
+  const [expandedRows, setExpandedRows] = useState({});
+  const toggleExpand = (index) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
+
+  // const handleActionClick = (action, id) => {
+  //   toast({
+  //     title: `${action} Clicked`,
+  //     description: `🚧 Action '${action}' for Product Quote ID ${id} isn't implemented yet. You can request it! 🚀`,
+  //   });
+  // };
+  const GetProductQuote = async () => {
+
+    try {
+      const res = await axiosHandler.get(`/api/quotes?page=${page}&limit=10`)
+      console.log(res?.data)
+      setProductQuoteData(res?.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const DeleteData = async (_id) => {
+
+    try {
+      if (window.confirm("are you sure you want to delete the data?")) {
+        const res = await axiosHandler.delete(`/api/quotes/${_id}`)
+        console.log(res?.data)
+      }
+      GetProductQuote()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  useEffect(() => {
+    if (token) {
+      GetProductQuote(page)
+    }
+  }, [token, page])
 
   return (
     <motion.div
@@ -72,68 +112,96 @@ const AdminProductQuotes = () => {
           <CardTitle className="text-xl font-semibold text-text-charcoal">All Product Quotes</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
+          <div className="overflow-x-auto whitespace-nowrap rounded-lg border border-gray-200 shadow-sm bg-white">
+            <Table className="min-w-full divide-y divide-gray-200">
               <TableHeader>
-                <TableRow className="border-b bg-muted/20">
-                  <TableHead className="text-muted-foreground font-semibold">Product Name</TableHead>
-                  <TableHead className="text-muted-foreground text-center font-semibold">Quantity</TableHead>
-                  <TableHead className="text-muted-foreground hidden md:table-cell font-semibold">Customer</TableHead>
-                  <TableHead className="text-muted-foreground hidden lg:table-cell font-semibold">Email</TableHead>
-                  <TableHead className="text-muted-foreground font-semibold">Date</TableHead>
-                  <TableHead className="text-muted-foreground font-semibold">Status</TableHead>
-                  <TableHead className=" text-center text-muted-foreground font-semibold">Actions</TableHead>
+                <TableRow className="bg-gray-100 border-b border-gray-300">
+                  <TableHead className="text-muted-foreground font-semibold text-left px-4 py-3">Product Name</TableHead>
+                  <TableHead className="text-muted-foreground text-center font-semibold px-4 py-3">Quantity</TableHead>
+                  <TableHead className="text-muted-foreground text-center font-semibold px-4 py-3">Product Image</TableHead>
+                  <TableHead className="text-muted-foreground hidden md:table-cell font-semibold px-4 py-3">Customer</TableHead>
+                  <TableHead className="text-muted-foreground hidden lg:table-cell font-semibold px-4 py-3">Email</TableHead>
+                  <TableHead className="text-muted-foreground font-semibold px-4 py-3">Date</TableHead>
+                  <TableHead className="text-muted-foreground font-semibold px-4 py-3">Address</TableHead>
+                  <TableHead className="text-muted-foreground font-semibold px-4 py-3">Mobile No</TableHead>
+                  <TableHead className="text-muted-foreground font-semibold px-4 py-3">Status</TableHead>
+                  <TableHead className="text-center text-muted-foreground font-semibold px-4 py-3">Actions</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
-                {productQuotesData.map((quote, index) => (
+                {productQuoteData?.map((quote, index) => (
                   <motion.tr
                     key={quote.id}
                     custom={index}
                     variants={tableRowVariants}
                     initial="hidden"
                     animate="visible"
-                    className="border-b last:border-b-0 transition-colors hover:bg-muted/40 whitespace-nowrap"
+                    className={`border-b last:border-b-0 transition-colors hover:bg-blue-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
                   >
-                    <TableCell className="font-medium text-foreground py-4 pr-2">{quote.productName}</TableCell>
-                    <TableCell className="text-muted-foreground text-center py-4 pr-2">{quote.quantity}</TableCell>
-                    <TableCell className="text-muted-foreground hidden md:table-cell py-4 pr-2">{quote.customerName}</TableCell>
-                    <TableCell className="text-muted-foreground hidden lg:table-cell py-4 pr-2">{quote.email}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm py-4 pr-2">{quote.date}</TableCell>
-                    <TableCell className="py-4 pr-2">
-                      <span className={cn(
-                        'px-2 py-1 text-xs font-semibold rounded-full capitalize',
-                        getStatusClass(quote.status)
-                      )}>
+                    <TableCell className="font-medium text-foreground py-4 px-4 max-w-xs truncate" title={quote.productName}>
+                      {quote.productName}
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground text-center py-4 px-4">{quote.quantity}</TableCell>
+
+                    <TableCell className="text-muted-foreground text-center py-4 px-4">
+                      <img
+                        src={quote.image}
+                        alt={quote.productName}
+                        className="mx-auto h-14 w-14 rounded-md object-cover border border-gray-300 shadow-sm"
+                        loading="lazy"
+                      />
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground hidden md:table-cell py-4 px-4 max-w-xs truncate" title={quote.name}>
+                      {quote.name}
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground hidden lg:table-cell py-4 px-4 max-w-xs truncate" title={quote.email}>
+                      {quote.email}
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground text-sm py-4 px-4 whitespace-nowrap">{new Date(quote.dateAdded).toLocaleDateString()}</TableCell>
+
+                    <TableCell className="text-muted-foreground hidden lg:table-cell py-4 px-4 " title={quote.address}>
+                      <div className="text-sm text-gray-800">
+                        {expandedRows[index]
+                          ? quote.address
+                          : `${quote.address.slice(0, 20)}${quote.address.length > 20 ? '.....' : ''}`}
+                        {quote.address.length > 10 && (
+                          <button
+                            onClick={() => toggleExpand(index)}
+                            className="ml-2 text-blue-500 hover:underline text-sm"
+                          >
+                            {expandedRows[index] ? 'Show less' : 'Show more'}
+                          </button>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm py-4 px-4 whitespace-nowrap">{quote.phone}</TableCell>
+
+                    <TableCell className="py-4 px-4 text-center">
+                      <span
+                        className={cn(
+                          'inline-block px-3 py-1 text-xs font-semibold rounded-full capitalize shadow-sm',
+                          getStatusClass(quote.status)
+                        )}
+                      >
                         {quote.status}
                       </span>
                     </TableCell>
-                    <TableCell className="text-right py-4 pl-2">
-                      <div className="flex justify-end items-center gap-1">
+
+                    <TableCell className="text-center py-4 px-4">
+                      <div className="flex justify-center items-center gap-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-primary hover:text-accent hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('View', quote.id)}
+                          className="text-destructive hover:text-red-500 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
+                          onClick={() => DeleteData(quote._id)}
+                          aria-label={`Delete quote for ${quote.productName}`}
                         >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-secondary hover:text-yellow-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('Edit', quote.id)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-destructive hover:text-red-400 hover:bg-transparent focus:bg-transparent active:bg-transparent transition-colors"
-                          onClick={() => handleActionClick('Delete', quote.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
+                          <Archive size={20} />
                         </Button>
                       </div>
                     </TableCell>
@@ -141,13 +209,14 @@ const AdminProductQuotes = () => {
                 ))}
               </TableBody>
             </Table>
-
           </div>
-           {productQuotesData.length === 0 && (
+
+          {productQuoteData?.length === 0 && (
             <p className="text-center text-muted-foreground py-8">No product quote requests found.</p>
           )}
         </CardContent>
       </Card>
+      <Paginations page={page} setPage={setPage} hasNextPage={productQuoteData?.length === 10} />
     </motion.div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ListOrdered, Edit, Trash2, Eye, PlusCircle, Search, CheckSquare, XSquare, UploadCloud, Save, XCircle } from 'lucide-react';
+import { ListOrdered, Edit, Trash2, Eye, PlusCircle, Search, CheckSquare, XSquare, UploadCloud, Save, XCircle, Archive } from 'lucide-react';
 
 import { useToast } from '@/components/ui/use-toast';
 import { useFormik } from 'formik';
@@ -16,6 +16,8 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { productValidationSchema } from '../../Validations/ProductValidations';
 import axiosHandler from '../../config/Axioshandler';
+import { useAuthContext } from '../../Context/authcontext';
+import Paginations from '../Paginations';
 
 const productCategories = [
   { value: 'woven_labels', label: 'Woven Labels' },
@@ -55,9 +57,11 @@ const AdminManageProducts = () => {
   const [productImages, setProductImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [editTable, setEditTable] = useState(null)
+  const [page, setPage] = useState(1)
+  const {token}  = useAuthContext()
   const GetProduct = async () => {
     try {
-      const res = await axiosHandler.get('/api/products/');
+      const res = await axiosHandler.get(`/api/products?page=${page}&limit=10`);
       setProductData(res.data || []);
     } catch (err) {
       console.error('GetProduct error:', err);
@@ -189,8 +193,10 @@ const AdminManageProducts = () => {
 
 
   useEffect(() => {
-    GetProduct();
-  }, []);
+  if(token){
+    GetProduct(page);
+  }
+  }, [page,token]);
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" className="space-y-6">
@@ -259,7 +265,7 @@ const AdminManageProducts = () => {
                       {product.status}
                     </Button>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">{product.dateAdded}</TableCell>
+                   <TableCell className="text-muted-foreground text-sm py-4 px-4 whitespace-nowrap">{new Date(product.dateAdded).toLocaleDateString()}</TableCell>
                   <TableCell className="flex justify-end gap-1">
                     <Button
                       onClick={() => {
@@ -276,7 +282,7 @@ const AdminManageProducts = () => {
                       size="icon"
                       className="text-blue-600 hover:text-blue-600 hover:bg-transparent"
                     >
-                      <Edit />
+                      <Edit size={20} />
                     </Button>
 
                     <Button
@@ -285,7 +291,7 @@ const AdminManageProducts = () => {
                       size="icon"
                       className="text-red-600 hover:text-red-600 hover:bg-transparent"
                     >
-                      <Trash2 />
+                      <Archive size={20} />
                     </Button>
                   </TableCell>
 
@@ -473,6 +479,8 @@ const AdminManageProducts = () => {
           </>
         )}
       </AnimatePresence>
+
+      <Paginations page={page} setPage={setPage} hasNextPage={ProductData?.length === 10} />
     </motion.div>
   );
 };

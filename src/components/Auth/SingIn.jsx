@@ -22,6 +22,7 @@ const SignIn = () => {
                 localStorage.setItem("tk", res.data.token)
                 setToken(res.data.token);
                 navigate('/admin')
+                console.log(res?.data)
             } catch (error) {
                 console.log(error)
             }
@@ -78,17 +79,6 @@ const SignIn = () => {
                         />
                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-3  ">{showPassword ? <Eye /> : <EyeOff />} </button>
                     </div>
-
-                    {/* Remember Me & Forgot Link */}
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                        <label className="flex items-center">
-                            <input type="checkbox" className="mr-2 accent-sky-600" />
-                            Remember me
-                        </label>
-                        <a href="#" className="text-sky-600 hover:underline transition duration-150">Forgot password?</a>
-                    </div>
-
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow-md transition duration-300"

@@ -5,6 +5,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { Filter, Grid, List, Search, Star, ArrowRight } from 'lucide-react';
 import { DialogContent } from '../components/ui/dialog';
 import axiosHandler from '../config/Axioshandler';
+import { useAuthContext } from '../Context/authcontext';
+import { useFormik } from 'formik';
 
 const Products = () => {
   const [viewMode, setViewMode] = useState('grid');
@@ -13,7 +15,6 @@ const Products = () => {
   const [showForm, setShowForm] = useState(false);
   const [productData, setProductData] = useState([])
   const [selectedProduct, setSelectedProduct] = useState('');
-
   const { toast } = useToast();
 
   const categories = [
@@ -30,7 +31,7 @@ const Products = () => {
   const GetProduct = async () => {
     try {
       const res = await axiosHandler.get('/api/products/');
-      console.log(res?.data)
+
       setProductData(res.data || []);
     } catch (err) {
       console.error('GetProduct error:', err);
@@ -68,6 +69,51 @@ const Products = () => {
       document.body.style.overflow = '';
     };
   }, [showForm]);
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      quantity: '',
+      phone: '',
+      email: '',
+      address: '',
+      status: '',     
+      product: '',    
+    },
+    onSubmit: async (values) => {
+      try {
+        const payload = {
+          name: values.name,
+          email: values.email,
+          phone: values.phone, // use mobile from formik as phone in payload
+          address: values.address,
+          quantity: values.quantity,
+          productId: values.product || selectedProduct._id, 
+          status: values.status,
+        };
+
+        const res = await axiosHandler.post('/api/quotes', payload);
+        console.log(res.data)
+        toast({
+          title: 'Quote Requested',
+          description: 'Your quote request has been submitted successfully!',
+        });
+
+        setShowForm(false);
+        formik.resetForm();
+      } catch (error) {
+        console.error('Quote submission error:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to submit quote. Please try again later.',
+          variant: 'destructive',
+        });
+      }
+    }
+  });
+  
+
+
 
   useEffect(()=>{
     GetProduct()
@@ -155,7 +201,7 @@ const Products = () => {
               }`}>
               {filteredProducts.map((product, index) => (
                 <motion.div
-                  key={product.id || index}
+                  key={product._id || index}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
@@ -205,7 +251,8 @@ const Products = () => {
 
                     <Button
                       onClick={() => {
-                        setSelectedProduct(product.name);
+                        setSelectedProduct(product);
+                        formik.setFieldValue('product', product._id); // use _id here
                         setShowForm(true);
                       }}
                       className="w-full bg-blue-600 hover:bg-blue-700 transition-colors font-poppins"
@@ -213,6 +260,7 @@ const Products = () => {
                       Get Quote
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
+
                   </div>
                 </motion.div>
              
@@ -275,86 +323,151 @@ const Products = () => {
             </p>
           </header>
 
-          <form
-            className="space-y-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setShowForm(false);
-            }}
-          >
-            <div className="space-y-1">
-              <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">
-                Customer Name
-              </label>
-              <input
-                type="text"
-                id="customerName"
-                name="customerName"
-                placeholder="Enter your name"
-                required
-                className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
 
-            <div className="space-y-1">
-              <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
-                Mobile Number
-              </label>
-              <input
-                type="tel"
-                id="mobile"
-                name="mobile"
-                placeholder="Enter your number"
-                required
-                className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+          {showForm && (
+            <form className="space-y-5" onSubmit={formik.handleSubmit}>
+              {/* Customer Name */}
+              <div className="space-y-1">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Customer Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
 
-            <div className="space-y-1">
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                City
-              </label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                placeholder="Enter your city"
-                required
-                className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+              {/* Selected Product */}
+              {selectedProduct && (
+                <div className="flex items-center gap-4 mb-4">
+                  <img
+                    src={selectedProduct.images?.[0] || '/placeholder.jpg'}
+                    alt={selectedProduct.name}
+                    className="w-20 h-20 object-cover rounded border shadow"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {selectedProduct.name}
+                  </h3>
+                </div>
+              )}
 
-            <div className="space-y-1">
-              <label htmlFor="product" className="block text-sm font-medium text-gray-700">
-                Product
-              </label>
-              <input
-                type="text"
-                id="product"
-                name="product"
-                readOnly
-                value={selectedProduct}
-                defaultValue="Custom Labels"
-                className="w-full px-4 py-2 border rounded-md border-gray-300 bg-gray-100 cursor-not-allowed"
-              />
-            </div>
+              {/* Quantity */}
+              <div className="space-y-1">
+                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                  Quantity
+                </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  placeholder="Enter quantity"
+                  required
+                  value={formik.values.quantity}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
 
-            <div className="flex justify-end space-x-4 pt-4">
-              <button
-                type="button"
-                className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
-                onClick={() => setShowForm(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+              {/* Mobile */}
+              <div className="space-y-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Mobile Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="Enter your number"
+                  required
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="space-y-1">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              {/* Address */}
+              <div className="space-y-1">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={formik.values.address}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              {/* Status */}
+              <div className="space-y-1">
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+                  Status
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="w-full px-4 py-2 border rounded-md bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  required
+                >
+                  <option value="" disabled>Select status</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="shipped">Shipped</option>
+                </select>
+              </div>
+
+
+              {/* Buttons */}
+              <div className="flex justify-end space-x-4 pt-4">
+                <button
+                  type="button"
+                  className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </section>
 

@@ -2,7 +2,7 @@ import {  createContext, useContext, useState } from "react";
 
 
 
-export const AuthContext = createContext()
+ const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
 

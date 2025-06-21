@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bell, Menu, Settings, LogOut, UserCircle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
@@ -17,13 +17,13 @@ import { useToast } from "@/components/ui/use-toast";
 
 const AdminNavbar = ({ toggleSidebar, isSidebarOpen }) => {
   const { toast } = useToast();
+  const navigate = useNavigate()
+  const handleLogout =  () =>{
+   localStorage.removeItem('tk')
+    navigate('/signin')
 
-  const handleLogout = () => {
-    toast({
-      title: "Logged Out",
-      description: "🚧 This feature isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀",
-    });
-  };
+  }
+
 
   const handleSettings = () => {
     toast({
@@ -59,7 +59,7 @@ const AdminNavbar = ({ toggleSidebar, isSidebarOpen }) => {
               {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
             <Link to="/admin/dashboard" className="flex-shrink-0 flex items-center">
-              <img  class="h-48 pt-2" alt="Krishna Labels Admin Logo" src="/logoCmpny.png" />
+              <img  className="h-48 pt-2" alt="Krishna Labels Admin Logo" src="/logoCmpny.png" />
               {/* <span className="font-roboto-slab text-lg font-bold text-text-charcoal hidden sm:block">Krishna Labels <span className="text-primary">Admin</span></span> */}
             </Link>
           </div>
@@ -82,9 +82,9 @@ const AdminNavbar = ({ toggleSidebar, isSidebarOpen }) => {
                   className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" alt="Admin Avatar" />
-                    <AvatarFallback>
-                      <UserCircle className="h-8 w-8 text-muted-foreground" />
+                    <AvatarImage src="/admin-avatar.jpg" alt="Admin Avatar" />
+                    <AvatarFallback className="bg-primary text-white font-semibold text-sm">
+                      A
                     </AvatarFallback>
                   </Avatar>
                 </motion.button>
