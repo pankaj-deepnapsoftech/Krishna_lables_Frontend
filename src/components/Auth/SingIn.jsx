@@ -36,7 +36,7 @@ const SignIn = () => {
             {/* Left Illustration Section - Hidden on small screens */}
             <div className="hidden md:flex flex-1 items-center justify-center p-10 h-full">
                 <img
-                    src="https://cdni.iconscout.com/illustration/premium/thumb/e-commerce-illustration-download-in-svg-png-gif-file-formats--online-shopping-customers-digital-technology-pack-science-illustrations-3457284.png"
+                    src="/ecommerce-web-page-concept-illustration.png"
                     alt="Illustration of e-commerce"
                     className="h-full w-full object-contain z-10"
                 />
