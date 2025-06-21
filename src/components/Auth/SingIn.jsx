@@ -77,7 +77,7 @@ const SignIn = () => {
                             className="w-full px-4 py-3  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 transition duration-200"
                             required
                         />
-                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-3  ">{showPassword ? <Eye /> : <EyeOff />} </button>
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-3  ">{showPassword ? <Eye size={20} /> : <EyeOff size={20}  />} </button>
                     </div>
                     <button
                         type="submit"
