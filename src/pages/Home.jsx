@@ -86,7 +86,7 @@ const Home = () => {
       image: "/process1.png",
       title: "Request a Quote",
       description:
-        "Submit the details for your labels or hangtags. Remember to include your logo, the quantity, and the size needed.",
+        " Submit details about your product. Remember to include your logo, the quantity, and the size needed.",
     },
     {
       number: "Step 2",
@@ -263,7 +263,7 @@ const Home = () => {
                       Custom Woven Labels
                     </div>
                     <div className="text-base md:text-lg font-medium mt-1 text-white px-3 py-0.5 rounded">
-                      2.5* x 1* or Less
+                      2.5" x 1" or Less
                     </div>
                     <div className="text-base md:text-lg font-bold mt-1 flex flex-col items-center gap-1">
                       {pricing.map((item, index) => (
@@ -357,7 +357,8 @@ const Home = () => {
             className="text-center mb-16"
           >
             <h2 className={`${sectionTitleClasses}`}>
-              Our <span className={highlightSpanClasses}>Clients</span>
+              Krishna Labels 
+              <span className={highlightSpanClasses}> {" "}Spotlights</span>
             </h2>
             <p className={`${sectionSubtitleClasses}`}>
               Trusted by 4560 brands
@@ -551,7 +552,7 @@ const Home = () => {
                 <img
                   src={highlight.image}
                   alt={highlight.title}
-                  className="bg-white rounded-lg w-40 h-40 object-cover flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-shadow group-hover:scale-110 transform transition-transform duration-300"
+                  className="bg-white rounded-lg w-40 h-40 object-cover flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl  group-hover:scale-110 transform transition-transform duration-300"
                 />
                 <h3
                   className={`text-xl font-semibold ${paragraphClasses} mb-3`}
@@ -581,7 +582,7 @@ const Home = () => {
             <h2 className={`${sectionTitleClasses}`}>
               Inspiring Customer{" "}
               <span className={highlightSpanClasses}>
-                Projects using our Product
+                using our Product
               </span>
             </h2>
             <p className={`${sectionSubtitleClasses}`}>

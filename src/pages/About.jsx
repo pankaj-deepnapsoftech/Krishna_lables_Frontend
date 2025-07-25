@@ -71,7 +71,7 @@ const About = () => {
       icon: <Globe className="w-10 h-10 text-green-500" />,
       title: "Global Reach",
       description:
-        "Serving clients across India with reliability",
+        "Global reach, trusted by clients across India and around the world.",
     },
     {
       icon: <Clock className="w-10 h-10 text-purple-500" />,
@@ -155,7 +155,7 @@ const About = () => {
                   With the farsightedness of our mentor Mr. Raja Mallick and
                   with his guidance we have build for ourselves a level of high
                   grade strategies. Our is a group of well experienced staff and
-                  their expertise that guide us how to full fill the client's
+                  their expertise that guide us how to fulfill the client's
                   needs without any obstacles.
                 </p>
               </div>

@@ -45,13 +45,16 @@ const ContactInfo = () => {
     {
       icon: <Mail className="w-6 h-6 text-green-600" />,
       title: "Email Us",
-      details: ["mallick@krishnalabelsinc.com", "sales@krishnalabels.com"],
+      details: [
+        "merchant91@krishnalabelsinc.com",
+        "merchant71@krishnalabelsinc.com",
+      ],
       description: "Get in touch via email for detailed inquiries",
     },
     {
       icon: <Phone className="w-6 h-6 text-purple-600" />,
       title: "Call Us",
-      details: ["+91 99110 62762", "+91 XXXXX XXXXX"],
+      details: ["+91 8750762762", "+91 8595812334"],
       description: "Speak directly with our sales team",
     },
     {
