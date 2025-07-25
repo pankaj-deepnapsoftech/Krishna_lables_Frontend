@@ -1,0 +1,37 @@
+ # dependencies
+/node_modules
+
+# production
+/dist
+
+# vite cache
+/.vite
+
+# environment variables
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# misc
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Optional test/coverage
+coverage/
+public/newVideo.mp4

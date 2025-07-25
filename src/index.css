@@ -1,0 +1,686 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base & Layout */
+  --background: 220 20% 97%;
+  /* Light Gray Background */
+  --foreground: 240 10% 20%;
+  /* Charcoal for primary text */
+  --card: 0 0% 100%;
+  /* White cards */
+  --card-foreground: 240 10% 20%;
+  /* Charcoal for text on cards */
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 20%;
+  --border: 220 15% 88%;
+  /* Soft border for elements */
+  --input: 220 15% 88%;
+  --radius: 0.5rem;
+
+  /* Primary & Accent Colors (Website Theme Based) */
+  --primary: 210 70% 50%;
+  /* Soft Blue for actions/primary elements */
+  --primary-foreground: 0 0% 100%;
+  /* White text on primary */
+
+  --secondary: 45 100% 50%;
+  /* Yellow-Gold for highlights, status indicators */
+  --secondary-foreground: 240 10% 15%;
+  /* Dark text on yellow-gold */
+
+  --accent: 210 60% 55%;
+  /* A slightly brighter blue for hover/accent states */
+  --accent-foreground: 0 0% 100%;
+
+  /* Muted & Destructive */
+  --muted: 220 20% 90%;
+  /* Lighter gray for muted backgrounds/UI text */
+  --muted-foreground: 220 10% 45%;
+  /* Darker gray for muted text */
+
+  --destructive: 0 70% 55%;
+  /* Red for destructive actions */
+  --destructive-foreground: 0 0% 100%;
+
+  /* Ring (Focus outlines) */
+  --ring: 210 70% 50%;
+  /* Soft blue for focus rings */
+
+  /* Text specific */
+  --text-charcoal: white;
+  --text-soft-blue: 210 70% 50%;
+  --text-yellow-gold: 45 100% 40%;
+  /* Darker gold for text for readability */
+  --text-muted-gray: 220 10% 45%;
+  --text-on-dark-bg: 220 20% 97%;
+  /* For text on dark backgrounds like sidebar */
+  --text-on-primary: 0 0% 100%;
+  --text-on-secondary: 240 10% 15%;
+
+  /* Admin specific colors - DEPRECATED - Using theme colors now */
+  /* --admin-bg: 220 20% 97%; */
+  /* Already defined as --background */
+  /* --admin-sidebar-bg: 240 10% 15%;  Will use charcoal derived */
+  /* --admin-sidebar-text: 220 20% 85%; */
+  /* --admin-sidebar-hover-bg: 240 10% 25%; */
+  /* --admin-sidebar-active-bg: 210 70% 50%; */
+  /* Will use --primary */
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Roboto Slab", serif;
+  font-weight: 700;
+  color: hsl(var(--text-charcoal));
+}
+
+p,
+span,
+div,
+li {
+  color: hsl(var(--text-charcoal));
+}
+
+a {
+  color: hsl(var(--text-soft-blue));
+  text-decoration: none;
+}
+
+a:hover {
+  color: hsl(var(--accent));
+}
+
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.font-roboto-slab {
+  font-family: "Roboto Slab", serif;
+}
+
+@keyframes labelSwing {
+  0%,
+  100% {
+    transform: rotate(0deg) translateY(0px);
+  }
+
+  25% {
+    transform: rotate(3deg) translateY(-2px);
+  }
+
+  75% {
+    transform: rotate(-3deg) translateY(-2px);
+  }
+}
+
+@keyframes labelFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes labelFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.label-swing-hover:hover {
+  animation: labelSwing 0.7s ease-in-out;
+}
+
+.label-float-hover:hover {
+  animation: labelFloat 0.5s ease-in-out;
+}
+
+.label-fade-in {
+  animation: labelFadeIn 0.8s ease-out forwards;
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.gradient-blue {
+  /* Kept for frontend if used */
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+}
+
+.gradient-blue p,
+.gradient-blue span,
+.gradient-blue div,
+.gradient-blue li,
+.gradient-blue h1,
+.gradient-blue h2,
+.gradient-blue h3,
+.gradient-blue h4,
+.gradient-blue h5,
+.gradient-blue h6 {
+  color: hsl(var(--text-on-dark-bg));
+}
+
+.gradient-gold {
+  /* Kept for frontend if used */
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+}
+
+.gradient-gold p,
+.gradient-gold span,
+.gradient-gold div,
+.gradient-gold li,
+.gradient-gold h1,
+.gradient-gold h2,
+.gradient-gold h3,
+.gradient-gold h4,
+.gradient-gold h5,
+.gradient-gold h6 {
+  color: hsl(var(--text-charcoal));
+}
+
+.gradient-elegant {
+  /* Kept for frontend if used */
+  background: linear-gradient(
+    135deg,
+    hsl(var(--text-navy-blue)) 0%,
+    #334155 50%,
+    #475569 100%
+  );
+}
+
+.gradient-elegant p,
+.gradient-elegant span,
+.gradient-elegant div,
+.gradient-elegant li,
+.gradient-elegant h1,
+.gradient-elegant h2,
+.gradient-elegant h3,
+.gradient-elegant h4,
+.gradient-elegant h5,
+.gradient-elegant h6 {
+  color: hsl(var(--text-on-dark-bg));
+}
+
+.product-card {
+  /* Kept for frontend if used */
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.product-card p,
+.product-card span,
+.product-card div,
+.product-card li {
+  color: hsl(var(--text-charcoal));
+}
+
+.product-card h3 {
+  color: hsl(var(--text-navy-blue));
+  /* Original frontend specific */
+}
+
+.product-card::before {
+  /* Kept for frontend if used */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary)),
+    hsl(var(--accent)),
+    #06b6d4
+  );
+}
+
+.product-card:hover {
+  /* Kept for frontend if used */
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hero-overlay {
+  /* Kept for frontend if used */
+  background: linear-gradient(
+    135deg,
+    rgba(0, 34, 68, 0.9) 0%,
+    rgba(30, 58, 138, 0.8) 50%,
+    rgba(59, 130, 246, 0.7) 100%
+  );
+}
+
+.hero-overlay p,
+.hero-overlay span,
+.hero-overlay div,
+.hero-overlay li,
+.hero-overlay h1,
+.hero-overlay h2 {
+  color: hsl(var(--text-on-dark-bg));
+}
+
+.form-input {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+  color: hsl(var(--foreground));
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+.form-input:focus {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsla(var(--ring), 0.2);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: hsl(var(--muted-foreground));
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}
+
+.timeline-dot-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.nav-icon-item:hover {
+  /* Frontend nav item hover */
+  box-shadow: 0 0 15px 2px hsla(330, 80%, 55%, 0.4),
+    0 0 25px 5px hsla(330, 80%, 55%, 0.2);
+  /* Original accent */
+}
+
+/* Admin Dashboard Specific Styles */
+.admin-main-content {
+  background-color: hsl(var(--background));
+  /* Light gray background */
+}
+
+.admin-card {
+  background-color: hsl(var(--card));
+  /* White card */
+  color: hsl(var(--card-foreground));
+  /* Charcoal text */
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px -2px hsla(220, 20%, 20%, 0.07),
+    0 2px 8px -2px hsla(220, 20%, 20%, 0.04);
+  /* Soft shadow */
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.admin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px -3px hsla(220, 20%, 20%, 0.1),
+    0 4px 10px -3px hsla(220, 20%, 20%, 0.06);
+}
+
+.admin-table-card .table thead th {
+  background-color: hsl(var(--muted));
+  /* Lighter gray for table header */
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+/* Ensures admin pages fill height */
+.admin-outlet-container > div {
+  min-height: calc(100vh - 4rem - 3rem);
+  /* Navbar height and some padding */
+}
+
+/* Responsive sidebar collapse */
+@media (max-width: 768px) {
+  .admin-sidebar-auto-collapse {
+    width: 80px;
+    /* Collapsed width */
+  }
+
+  .admin-sidebar-auto-collapse .admin-sidebar-nav-text {
+    display: none;
+    /* Hide text on mobile when collapsed */
+  }
+
+  .admin-sidebar-auto-collapse .admin-sidebar-header-text {
+    display: none;
+  }
+
+  .admin-sidebar-auto-collapse .flex.items-center.justify-between {
+    justify-content: center;
+  }
+}
+
+/* Chart Placeholder Styles */
+.chart-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  /* Ensure charts have some height */
+  border: 2px dashed hsl(var(--border));
+  border-radius: var(--radius);
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.chart-placeholder svg {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+/* Status colors for admin dashboard */
+.status-new {
+  color: hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.1);
+}
+
+/* Blue */
+.status-contacted {
+  color: hsl(var(--secondary));
+  background-color: hsla(var(--secondary), 0.15);
+}
+
+/* Yellow-Gold */
+.status-converted {
+  color: 340 70% 50%;
+  background-color: hsla(340, 70%, 50%, 0.1);
+}
+
+/* Green-like, temporary */
+.status-pending {
+  color: hsl(var(--secondary));
+  background-color: hsla(var(--secondary), 0.15);
+}
+
+/* Yellow-Gold */
+.status-approved {
+  color: hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.1);
+}
+
+/* Blue */
+.status-shipped {
+  color: 120 60% 45%;
+  background-color: hsla(120, 60%, 45%, 0.1);
+}
+
+/* Green */
+.status-open {
+  color: 0 70% 55%;
+  background-color: hsla(0, 70%, 55%, 0.1);
+}
+
+/* Red */
+.status-answered {
+  color: hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.1);
+}
+
+/* Blue */
+.status-resolved {
+  color: 120 60% 45%;
+  background-color: hsla(120, 60%, 45%, 0.1);
+}
+
+/* Green */
+.status-read {
+  color: 260 60% 60%;
+  background-color: hsla(260, 60%, 60%, 0.1);
+}
+
+/* Purple-ish */
+.status-replied {
+  color: hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.1);
+}
+
+/* Blue */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.infinite-scroll-wrapper {
+  display: flex;
+  animation: scroll 30s linear infinite;
+}
+
+.infinite-scroll-wrapper .motion-div {
+  margin-right: 20px;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b4b5b6;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 6px;
+}
+
+/* App.css */
+
+/* Add this to your CSS file */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
