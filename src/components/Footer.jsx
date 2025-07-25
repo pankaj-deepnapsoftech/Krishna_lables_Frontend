@@ -120,13 +120,13 @@ const Footer = () => {
               <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-700/50 transition-colors">
                 <Mail className="w-6 h-6 text-yellow-400 flex-shrink-0" />
                 <span className="text-gray-300 text-sm font-poppins">
-                  mallick@krishnalabelsinc.com
+                  merchant91@krishnalabelsinc.com
                 </span>
               </div>
               <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-700/50 transition-colors">
                 <Phone className="w-6 h-6 text-yellow-400 flex-shrink-0" />
                 <span className="text-gray-300 text-sm font-poppins">
-                  +91 99110 62762
+                  +91 8750762762
                 </span>
               </div>
               <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-700/50 transition-colors">

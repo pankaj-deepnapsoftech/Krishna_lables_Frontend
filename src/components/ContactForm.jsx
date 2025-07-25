@@ -36,7 +36,10 @@ const ContactForm = () => {
     <form onSubmit={formik.handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+          >
             Full Name *
           </label>
           <input
@@ -46,8 +49,9 @@ const ContactForm = () => {
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`form-input w-full px-4 py-3 ${formik.touched.name && formik.errors.name ? 'border-red-500' : ''
-              }`}
+            className={`form-input w-full px-4 py-3 ${
+              formik.touched.name && formik.errors.name ? "border-red-500" : ""
+            }`}
             placeholder="Your full name"
           />
           {formik.touched.name && formik.errors.name && (
@@ -56,7 +60,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+          >
             Email Address *
           </label>
           <input
@@ -66,8 +73,11 @@ const ContactForm = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`form-input w-full px-4 py-3 ${formik.touched.email && formik.errors.email ? 'border-red-500' : ''
-              }`}
+            className={`form-input w-full px-4 py-3 ${
+              formik.touched.email && formik.errors.email
+                ? "border-red-500"
+                : ""
+            }`}
             placeholder="your@email.com"
           />
           {formik.touched.email && formik.errors.email && (
@@ -78,7 +88,10 @@ const ContactForm = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+          >
             Phone Number
           </label>
           <input
@@ -88,9 +101,12 @@ const ContactForm = () => {
             value={formik.values.phone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`form-input w-full px-4 py-3 ${formik.touched.phone && formik.errors.phone ? 'border-red-500' : ''
-              }`}
-            placeholder="+91 99110 62762"
+            className={`form-input w-full px-4 py-3 ${
+              formik.touched.phone && formik.errors.phone
+                ? "border-red-500"
+                : ""
+            }`}
+            placeholder="+91 8750762762"
           />
           {formik.touched.phone && formik.errors.phone && (
             <p className="text-xs text-red-500 mt-1">{formik.errors.phone}</p>
@@ -98,7 +114,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+          <label
+            htmlFor="company"
+            className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+          >
             Company Name
           </label>
           <input
@@ -108,8 +127,11 @@ const ContactForm = () => {
             value={formik.values.company}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`form-input w-full px-4 py-3 ${formik.touched.company && formik.errors.company ? 'border-red-500' : ''
-              }`}
+            className={`form-input w-full px-4 py-3 ${
+              formik.touched.company && formik.errors.company
+                ? "border-red-500"
+                : ""
+            }`}
             placeholder="Your company name"
           />
           {formik.touched.company && formik.errors.company && (
@@ -119,7 +141,10 @@ const ContactForm = () => {
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+        <label
+          htmlFor="subject"
+          className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+        >
           Subject *
         </label>
         <select
@@ -128,8 +153,11 @@ const ContactForm = () => {
           value={formik.values.subject}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className={`form-input w-full px-4 py-3 ${formik.touched.subject && formik.errors.subject ? 'border-red-500' : ''
-            }`}
+          className={`form-input w-full px-4 py-3 ${
+            formik.touched.subject && formik.errors.subject
+              ? "border-red-500"
+              : ""
+          }`}
         >
           <option value="">Select a subject</option>
           <option value="product-inquiry">Product Inquiry</option>
@@ -145,7 +173,10 @@ const ContactForm = () => {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-dark-gray mb-2 font-poppins">
+        <label
+          htmlFor="message"
+          className="block text-sm font-medium text-dark-gray mb-2 font-poppins"
+        >
           Message *
         </label>
         <textarea
@@ -155,8 +186,11 @@ const ContactForm = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           rows={5}
-          className={`form-input w-full px-4 py-3 resize-none ${formik.touched.message && formik.errors.message ? 'border-red-500' : ''
-            }`}
+          className={`form-input w-full px-4 py-3 resize-none ${
+            formik.touched.message && formik.errors.message
+              ? "border-red-500"
+              : ""
+          }`}
           placeholder="Tell us about your requirements..."
         ></textarea>
         {formik.touched.message && formik.errors.message && (
@@ -173,7 +207,6 @@ const ContactForm = () => {
         <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </Button>
     </form>
-  
   );
 };
 

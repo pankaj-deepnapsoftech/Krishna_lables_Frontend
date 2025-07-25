@@ -306,7 +306,7 @@ const Home = () => {
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <a href="tel:9911062762">
+              <a href="tel:8750762762">
                 <Button
                   variant="outline"
                   size="lg"
@@ -326,7 +326,7 @@ const Home = () => {
                       d="M3 5a2 2 0 012-2h2.28a2 2 0 011.94 1.52l.3 1.2a2 2 0 01-.45 1.95l-1.1 1.1a16.06 16.06 0 006.36 6.36l1.1-1.1a2 2 0 011.95-.45l1.2.3A2 2 0 0121 18.72V21a2 2 0 01-2 2h-1C9.163 23 1 14.837 1 5V4a2 2 0 012-2z"
                     />
                   </svg>
-                  Call Now: 9911062762
+                  Call Now: 8750762762
                 </Button>
               </a>
             </motion.div>
@@ -357,8 +357,8 @@ const Home = () => {
             className="text-center mb-16"
           >
             <h2 className={`${sectionTitleClasses}`}>
-              Krishna Labels 
-              <span className={highlightSpanClasses}> {" "}Spotlights</span>
+              Krishna Labels
+              <span className={highlightSpanClasses}>{" "}Spotlights</span>
             </h2>
             <p className={`${sectionSubtitleClasses}`}>
               Trusted by 4560 brands
@@ -581,9 +581,7 @@ const Home = () => {
           >
             <h2 className={`${sectionTitleClasses}`}>
               Inspiring Customer{" "}
-              <span className={highlightSpanClasses}>
-                using our Product
-              </span>
+              <span className={highlightSpanClasses}>using our Product</span>
             </h2>
             <p className={`${sectionSubtitleClasses}`}>
               Hear what our valued clients have to say about their experience

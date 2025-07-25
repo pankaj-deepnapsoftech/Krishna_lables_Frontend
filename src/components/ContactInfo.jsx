@@ -91,7 +91,7 @@ const ContactInfo = () => {
             <Button
               className="bg-green-500 hover:bg-green-600 text-white font-poppins"
               onClick={() =>
-                window.open("https://wa.me/919911062762", "_blank")
+                window.open("https://wa.me/918750762762", "_blank")
               }
             >
               Chat on WhatsApp

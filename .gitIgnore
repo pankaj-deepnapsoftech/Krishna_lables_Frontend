@@ -32,6 +32,8 @@ Thumbs.db
 *.swp
 *.swo
 
+*.zip
+
 # Optional test/coverage
 coverage/
 public/newVideo.mp4

@@ -385,8 +385,8 @@ const Header = () => {
     }
   };
 
-  const phoneNumber = "+91 9911062762";
-  const phoneHref = "tel:+919911062762";
+  const phoneNumber = "+91 8750762762";
+  const phoneHref = "tel:+918750762762";
 
   return (
     <motion.header
