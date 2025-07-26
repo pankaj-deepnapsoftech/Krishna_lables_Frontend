@@ -672,7 +672,7 @@ const Home = () => {
                   <div className="flex justify-between gap-32">
                     {/* <MessageSquare className="w-10 h-10 text-blue-500 mb-6" /> */}
                     <img
-                      src="/Google__G__logo.svg.webp"
+                      src="/Google__G__logo.svg.png"
                       alt="Testimonial"
                       className="w-10 h-10 rounded-full object-contain mb-6 bg-white shadow"
                     />
