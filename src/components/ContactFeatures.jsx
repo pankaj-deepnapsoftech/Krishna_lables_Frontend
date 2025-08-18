@@ -31,7 +31,7 @@ const ContactFeatures = () => {
     },
     {
       icon: <Globe className="w-10 h-10 text-blue-500" />,
-      title: 'Indian Shipping',
+      title: 'Worldwide Shipping',
       description: 'Delivery with secure packaging'
     },
     {

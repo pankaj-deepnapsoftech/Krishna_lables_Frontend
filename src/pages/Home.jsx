@@ -722,7 +722,7 @@ const Home = () => {
                 <span className="text-yellow-400">14+ Years</span> of Excellence
               </h2>
               <p className="text-xl text-gray-500 mb-8 leading-relaxed font-poppins">
-                Since 2010, Krishna Labels Inc has been at the forefront of
+                Since 2008, Krishna Labels Inc has been at the forefront of
                 textile manufacturing innovation, serving clients across the
                 Indian Subcontinent with unwavering commitment to quality.
               </p>
@@ -823,7 +823,7 @@ const Home = () => {
                   consistency in every product we deliver.
                 </p>
                 <a
-                  href="/isoCertified.jpeg"
+                  href="/isoCertified.jpg"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -850,7 +850,7 @@ const Home = () => {
                   friendly and socially responsible facilities.
                 </p>
                 <a
-                  href="/oekoCertified.jpeg"
+                  href="/oekoCertified.jpg"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

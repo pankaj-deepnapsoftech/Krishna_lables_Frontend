@@ -188,7 +188,7 @@ const DashboardOverview = () => {
 
 
       {/* Charts Section */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
@@ -197,10 +197,10 @@ const DashboardOverview = () => {
         <ChartPlaceholder title="Enquiry Trends (Last 30 Days)" icon={BarChart3} />
         <ChartPlaceholder title="Product Quotes by Category" icon={ShoppingBag} />
         <ChartPlaceholder title="Enquiry Status Breakdown" icon={PieChartIcon} />
-      </motion.div>
+      </motion.div> */}
 
       {/* Recent Activity */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.5 }}
@@ -242,7 +242,7 @@ const DashboardOverview = () => {
             </ul>
           </CardContent>
         </Card>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 };

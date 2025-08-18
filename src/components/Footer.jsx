@@ -36,7 +36,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center space-x-2 text-sm text-gray-400 font-poppins">
               <Clock className="w-5 h-5 text-yellow-400" />
-              <span className="text-white">Established 2010</span>
+              <span className="text-white">Established 2008</span>
             </div>
           </motion.div>
 
@@ -113,8 +113,8 @@ const Footer = () => {
               <div className="flex items-start space-x-3 p-2 rounded-md hover:bg-gray-700/50 transition-colors">
                 <MapPin className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
                 <span className="text-gray-300 text-sm font-poppins">
-                  81- A, Vashist Park, Pankha Road, Street No. 12, Vashisht
-                  Park, New Delhi, Delhi 110046
+                  Wz-81/a Vashisht Park, Pankha Road, Street no-12, New Delhi,
+                  110046
                 </span>
               </div>
               <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-700/50 transition-colors">

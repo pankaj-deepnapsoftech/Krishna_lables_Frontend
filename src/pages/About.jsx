@@ -17,7 +17,7 @@ import AnimatedCounter from "@/components/ui/AnimatedCounter";
 const About = () => {
   const milestones = [
     {
-      year: "2010",
+      year: "2008",
       event: "Krishna Labels Inc Founded",
       description: "",
       icon: <Briefcase className="w-6 h-6 timeline-dot-icon" />,
@@ -109,7 +109,7 @@ const About = () => {
             </h1>
             <p className="text-xl text-gray-500 leading-relaxed font-poppins">
               Distinguished manufacturer & exporter of premium-quality textile
-              accessories since 2010
+              accessories since 2008
             </p>
           </motion.div>
         </div>
@@ -129,7 +129,7 @@ const About = () => {
               </h2>
               <div className={`space-y-6 ${paragraphClasses}`}>
                 <p>
-                  Krishna Labels INC has been incepted in the year 2010 and
+                  Krishna Labels INC has been incepted in the year 2008 and
                   since then every day efficiently engaged in manufacturing and
                   exporting superior quality in maintaining our line of products
                   which includes Clothing Labels and Tags, Printed and Woven

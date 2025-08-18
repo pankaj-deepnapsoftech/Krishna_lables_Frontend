@@ -38,9 +38,9 @@ const ContactInfo = () => {
       icon: <MapPin className="w-6 h-6 text-blue-600" />,
       title: "Our Location",
       details: [
-        "81- A, Vashist Park, Pankha Road, Street No. 12, Vashisht Park, New Delhi, Delhi 110046",
+        "Wz-81/a Vashisht Park, Pankha Road, Street no-12, New Delhi, 110046",
       ],
-      description: "Visit our state-of-the-art manufacturing facility",
+      description: "Visit our state of the art manufacturing facility",
     },
     {
       icon: <Mail className="w-6 h-6 text-green-600" />,
