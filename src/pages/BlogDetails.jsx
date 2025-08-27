@@ -4,7 +4,7 @@ import axiosHandler from "../config/Axioshandler";
 import { ArrowLeft } from "lucide-react";
 
 const BlogDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams(); // Changed from id to slug
   const navigate = useNavigate();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,8 @@ const BlogDetails = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axiosHandler.get(`/api/blogs/${id}`);
+        // Use slug endpoint instead of id endpoint
+        const res = await axiosHandler.get(`/api/blogs/${slug}`);
         setBlog(res.data);
       } catch (err) {
         setError("Blog not found");
@@ -22,7 +23,7 @@ const BlogDetails = () => {
       }
     };
     fetchBlog();
-  }, [id]);
+  }, [slug]); // Changed dependency from id to slug
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
   if (error)
