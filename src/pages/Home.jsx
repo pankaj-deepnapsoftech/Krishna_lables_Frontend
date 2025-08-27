@@ -358,7 +358,7 @@ const Home = () => {
           >
             <h2 className={`${sectionTitleClasses}`}>
               Krishna Labels
-              <span className={highlightSpanClasses}>{" "}Spotlights</span>
+              <span className={highlightSpanClasses}> Spotlights</span>
             </h2>
             <p className={`${sectionSubtitleClasses}`}>
               Trusted by 4560 brands
@@ -658,36 +658,47 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="overflow-hidden">
-            <div className="infinite-scroll-wrapper flex w-full pb-5">
-              {testimonials.map((testimonial, index) => (
+          <div className="overflow-hidden relative w-full">
+            <div
+              className="flex gap-8 animate-testimonial-slide"
+              style={{
+                width: `${testimonials.length * 2 * 400}px`,
+                animation: `testimonial-slide ${
+                  testimonials.length * 3
+                }s linear infinite`,
+              }}
+            >
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <motion.div
-                  key={testimonial._id || testimonial.id || index}
+                  key={`${testimonial._id || testimonial.id || index}-${index}`}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: index * 0.15 }}
-                  className="bg-gradient-to-br from-slate-50 to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col mx-4 h-[450px]"
+                  transition={{ duration: 0.5, delay: (index % 6) * 0.1 }}
+                  className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[42rem] h-[850px]"
                 >
-                  <div className="flex justify-between gap-32">
-                    {/* <MessageSquare className="w-10 h-10 text-blue-500 mb-6" /> */}
+                  <div className="flex justify-between items-start mb-4">
                     <img
-                      src="/Google__G__logo.svg.png"
-                      alt="Testimonial"
-                      className="w-10 h-10 rounded-full object-contain mb-6 bg-white shadow"
+                      src="\Google__G__logo.svg.png"
+                      alt="Google Review"
+                      className="w-8 h-8 rounded-full object-contain bg-white shadow"
                     />
-
-                    <div className="flex gap-1 mr-10">
+                    <div className="flex gap-1">
                       {[...Array(Number(testimonial.star) || 5)].map((_, i) => (
-                        <StarIcon key={i} color="#FFC83D" fill="#FFC83D" />
+                        <StarIcon
+                          key={i}
+                          color="#FFC83D"
+                          fill="#FFC83D"
+                          className="w-4 h-4"
+                        />
                       ))}
                     </div>
                   </div>
-                  <p className="text-md italic  flex-grow">
+                  <p className="text-sm italic text-gray-700 flex-grow line-clamp-6 leading-relaxed mb-4">
                     {testimonial.message}
                   </p>
                   <div className="flex items-center mt-auto">
-                    <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-semibold mr-4">
+                    <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">
                       {testimonial.avatar ||
                         (testimonial.name &&
                           testimonial.name
@@ -697,13 +708,34 @@ const Home = () => {
                             .toUpperCase())}
                     </div>
                     <div>
-                      <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm">{testimonial.company}</p>
+                      <p className="font-semibold text-sm">
+                        {testimonial.name}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {testimonial.company}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* Add CSS for testimonial animation */}
+            <style>{`
+              @keyframes testimonial-slide {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-testimonial-slide {
+                will-change: transform;
+              }
+              .line-clamp-6 {
+                display: -webkit-box;
+                -webkit-line-clamp: 6;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
+            `}</style>
           </div>
         </div>
       </section>
