@@ -144,14 +144,13 @@ const AdminManageProducts = () => {
           },
         }
       );
-      console.log(res?.data)
+      console.log(res?.data);
       return res.data?.[0];
     } catch (error) {
       console.error("Image upload failed:", error.response || error.message);
       return null;
     }
   };
-  
 
   // Formik form handler
   const formik = useFormik({
@@ -177,7 +176,7 @@ const AdminManageProducts = () => {
         formData.append("file", values.images[0]);
         imageUrl = await ImageUploader(formData);
       }
- console.log(values.images)
+      console.log(values.images);
       const ProductPayload = {
         ...values,
         images: imageUrl,
@@ -221,6 +220,28 @@ const AdminManageProducts = () => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
+    // Check if all files are JPEG/JPG
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const invalidFiles = files.filter(
+      (file) => !allowedTypes.includes(file.type)
+    );
+
+    if (invalidFiles.length > 0) {
+      toast.error("Only JPEG, JPG, PNG, WEBP files are allowed!");
+      e.target.value = null;
+      return;
+    }
+
+    // Check file size (2MB limit)
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    const oversizedFiles = files.filter((file) => file.size > maxSize);
+
+    if (oversizedFiles.length > 0) {
+      toast.error("File size must be less than 2MB!");
+      e.target.value = null;
+      return;
+    }
+
     const previews = files.map((file) => URL.createObjectURL(file));
     const allFiles = [...productImages, ...files].slice(0, 1);
 
@@ -234,7 +255,7 @@ const AdminManageProducts = () => {
   const removeImage = (idx) => {
     const imgs = [...productImages];
     const pres = [...imagePreviews];
-    imgs.splice(idx, 1);   
+    imgs.splice(idx, 1);
     pres.splice(idx, 1);
     setProductImages(imgs);
     setImagePreviews(pres);
@@ -546,7 +567,7 @@ const AdminManageProducts = () => {
                               <SelectValue placeholder="Select Status" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem disabled >Select Status</SelectItem>
+                              <SelectItem disabled>Select Status</SelectItem>
                               <SelectItem value="Active">Active</SelectItem>
                               <SelectItem value="Inactive">Inactive</SelectItem>
                             </SelectContent>
@@ -638,7 +659,7 @@ const AdminManageProducts = () => {
                             <input
                               type="file"
                               multiple
-                              accept="image/*"
+                              accept=".jpg,.jpeg,image/jpeg"
                               onChange={handleImageUpload}
                               disabled={productImages.length >= 1}
                               className={cn(
@@ -650,8 +671,8 @@ const AdminManageProducts = () => {
                           </div>
 
                           <p className="text-xs text-gray-500">
-                            Only 1 image allowed. Recommended format: JPG, PNG.
-                            Max size: 2MB.
+                            Only 1 image allowed. Required format: JPEG/JPG
+                            only. Max size: 2MB.
                           </p>
 
                           {imagePreviews.length > 0 && (
