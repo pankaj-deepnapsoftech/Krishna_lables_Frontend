@@ -11,6 +11,7 @@ import axios from "axios";
 import AddBlogValidation from "@/Validations/AddBlogValidations";
 
 const ManageBlog = () => {
+  console.log("ManageBlog component rendered");
   const [showForm, setShowForm] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogData, setBlogData] = useState([]);
@@ -55,29 +56,29 @@ const ManageBlog = () => {
       tags: "",
       status: "New",
     },
-    validationSchema:AddBlogValidation,
+    validationSchema: AddBlogValidation,
     enableReinitialize: true,
     onSubmit: async (values) => {
       setLoading(true);
-    
+
       let ImageUrl = values.coverImage;
-    
+
       if (selectedFile) {
         const formData = new FormData();
         const fileToUpload =
           selectedFile instanceof File ? selectedFile : selectedFile?.[0];
-    
+
         if (fileToUpload) {
           formData.append("file", fileToUpload);
           ImageUrl = await ImageUploader(formData);
         }
       }
-    
+
       const BlogPayload = {
         ...values,
         coverImage: ImageUrl,
       };
-    
+
       try {
         if (editTable) {
           await axiosHandler.put(`/api/blogs/${values._id}`, BlogPayload);
@@ -86,7 +87,7 @@ const ManageBlog = () => {
           await axiosHandler.post(`/api/blogs`, BlogPayload);
           toast.success("Blog submitted");
         }
-    
+
         setShowForm(false);
         setEditTable(null);
         setSelectedFile(null);
@@ -97,17 +98,21 @@ const ManageBlog = () => {
       } finally {
         setLoading(false);
       }
-    }
-    
+    },
   });
 
   const getData = async () => {
+    console.log("getData called");
     setLoading(true);
     try {
+      console.log("Making API call to /api/blogs");
       const res = await axiosHandler.get(`/api/blogs?page=${page}&limit=10`);
-      setBlogData(res?.data);
+      console.log("API response:", res?.data);
+      setBlogData(res?.data?.blogs || []);
+      console.log("Blog data set:", res?.data?.blogs);
     } catch (error) {
-      console.log(error);
+      console.log("API error:", error);
+      setBlogData([]);
     } finally {
       setLoading(false);
     }
@@ -130,8 +135,14 @@ const ManageBlog = () => {
   };
 
   useEffect(() => {
+    console.log("ManageBlog useEffect triggered");
+    console.log("Token:", token);
+    console.log("Page:", page);
     if (token) {
+      console.log("Calling getData...");
       getData(page);
+    } else {
+      console.log("No token found");
     }
   }, [page, token]);
 
@@ -278,7 +289,7 @@ const ManageBlog = () => {
                   className="p-6 space-y-8 mt-8"
                 >
                   <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                  {editTable ? "Edit Blog" : " Add Blog"}
+                    {editTable ? "Edit Blog" : " Add Blog"}
                   </h2>
 
                   <div>
