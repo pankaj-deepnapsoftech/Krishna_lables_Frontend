@@ -17,7 +17,8 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axiosHandler.get("/api/products/");
+        // Fetch all products without pagination to find the specific product
+        const res = await axiosHandler.get("/api/products/?limit=1000");
         const products = res.data || [];
         const matchedProduct = products.find(
           (p) =>

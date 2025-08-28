@@ -16,6 +16,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Paginations from "./Paginations";
 
 const Products = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -24,6 +25,8 @@ const Products = () => {
   const [showForm, setShowForm] = useState(false);
   const [productData, setProductData] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(10);
   const navigate = useNavigate();
 
   const categories = [
@@ -42,7 +45,8 @@ const Products = () => {
 
   const GetProduct = async () => {
     try {
-      const res = await axiosHandler.get("/api/products/");
+      // Fetch all products without pagination for the products page
+      const res = await axiosHandler.get("/api/products/?limit=1000");
       setProductData(res.data || []);
     } catch (err) {
       console.error("GetProduct error:", err);
@@ -60,8 +64,19 @@ const Products = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Calculate pagination
+  const totalProducts = filteredProducts.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
   const handleFilter = (category) => {
     setSelectedCategory(category);
+    setCurrentPage(1); // Reset to first page when filtering
     // Update the URL with the selected tab
     const params = new URLSearchParams(location.search);
     if (category === "all") {
@@ -280,7 +295,10 @@ const Products = () => {
                 type="text"
                 placeholder="Search products..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1); // Reset to first page when searching
+                }}
                 className="w-52 pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-poppins text-dark-gray"
               />
             </div>
@@ -333,7 +351,27 @@ const Products = () => {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {filteredProducts.length > 0 ? (
+          {/* Results Summary */}
+          {filteredProducts.length > 0 && (
+            <div className="mb-6 text-sm text-gray-600 font-poppins">
+              Showing {indexOfFirstProduct + 1}-
+              {Math.min(indexOfLastProduct, totalProducts)} of {totalProducts}{" "}
+              products
+              {selectedCategory !== "all" && (
+                <span className="ml-2 text-blue-600 font-medium">
+                  in "
+                  {categories.find((cat) => cat.id === selectedCategory)?.name}"
+                </span>
+              )}
+              {searchTerm && (
+                <span className="ml-2 text-blue-600 font-medium">
+                  for "{searchTerm}"
+                </span>
+              )}
+            </div>
+          )}
+
+          {currentProducts.length > 0 ? (
             <div
               className={`grid gap-8 ${
                 viewMode === "grid"
@@ -341,7 +379,7 @@ const Products = () => {
                   : "grid-cols-1"
               }`}
             >
-              {filteredProducts.map((product, index) => (
+              {currentProducts.map((product, index) => (
                 <motion.div
                   key={product._id || index}
                   initial={{ opacity: 0, y: 30 }}
@@ -437,6 +475,16 @@ const Products = () => {
                 Try adjusting your search or filter criteria
               </p>
             </motion.div>
+          )}
+
+          {filteredProducts.length > 0 && totalPages > 1 && (
+            <div className="mt-12 flex justify-center">
+              <Paginations
+                page={currentPage}
+                setPage={setCurrentPage}
+                hasNextPage={currentPage < totalPages}
+              />
+            </div>
           )}
         </div>
       </section>
