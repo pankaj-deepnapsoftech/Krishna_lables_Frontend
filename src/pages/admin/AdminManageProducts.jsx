@@ -223,14 +223,24 @@ const AdminManageProducts = () => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    // Check if all files are JPEG/JPG
+    // Check both MIME type and file extension
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-    const invalidFiles = files.filter(
-      (file) => !allowedTypes.includes(file.type)
-    );
+    const allowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
+
+    const invalidFiles = files.filter((file) => {
+      const fileExtension = file.name
+        .toLowerCase()
+        .substring(file.name.lastIndexOf("."));
+      return (
+        !allowedTypes.includes(file.type) ||
+        !allowedExtensions.includes(fileExtension)
+      );
+    });
 
     if (invalidFiles.length > 0) {
-      toast.error("Only JPEG, JPG, PNG, WEBP files are allowed!");
+      toast.error(
+        "Only JPEG, JPG, PNG, WEBP files are allowed!"
+      );
       e.target.value = null;
       return;
     }
@@ -662,7 +672,7 @@ const AdminManageProducts = () => {
                             <input
                               type="file"
                               multiple
-                              accept=".jpg,.jpeg,image/jpeg"
+                              accept=".jpg,.jpeg,.png,.webp"
                               onChange={handleImageUpload}
                               disabled={productImages.length >= 1}
                               className={cn(
@@ -674,8 +684,8 @@ const AdminManageProducts = () => {
                           </div>
 
                           <p className="text-xs text-gray-500">
-                            Only 1 image allowed. Required format: JPEG/JPG
-                            only. Max size: 2MB.
+                            Only 1 image allowed. Supported formats: JPEG, JPG,
+                            PNG, WEBP only (JFIF not supported). Max size: 2MB.
                           </p>
 
                           {imagePreviews.length > 0 && (
