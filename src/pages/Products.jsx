@@ -38,6 +38,9 @@ const Products = () => {
     { id: "custom labels", name: "Custom Labels" },
     { id: "printed ribbons", name: "Printed Ribbons" },
     { id: "paper bag", name: "Paper Bag" },
+    { id: "wrapping papers", name: "Wrapping Papers" },
+    { id: "stickers", name: "Stickers" },
+    { id: "cotton bag", name: "Cotton Bag" },
     { id: "Promotional Keys rings", name: "Promotional Key Rings" },
   ];
 

@@ -59,6 +59,9 @@ const productCategories = [
   { value: "custom labels", label: "Custom Labels" },
   { value: "printed ribbons", label: "Printed Ribbons" },
   { value: "paper bag", label: "Paper Bag" },
+  { value: "wrapping papers", label: "Wrapping Papers" },
+  { value: "stickers", label: "Stickers" },
+  { value: "cotton bag", label: "Cotton Bag" },
   { value: "Promotional Keys rings", label: "Promotional Key Rings" },
 ];
 
