@@ -658,24 +658,18 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="overflow-hidden relative w-full">
+          <div className="overflow-hidden relative w-full group">
             <div
               className="flex gap-8 animate-testimonial-slide"
               style={{
                 width: `${testimonials.length * 2 * 400}px`,
-                animation: `testimonial-slide ${
-                  testimonials.length * 3
-                }s linear infinite`,
+                "--duration": `${testimonials.length * 3}s`,
               }}
             >
               {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <motion.div
                   key={`${testimonial._id || testimonial.id || index}-${index}`}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: (index % 6) * 0.1 }}
-                  className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[42rem] h-[850px]"
+                  className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col flex-shrink-0 h-[28rem] w-[28rem]"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <img
@@ -720,22 +714,24 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Add CSS for testimonial animation */}
+            {/* CSS stays inline */}
             <style>{`
-              @keyframes testimonial-slide {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .animate-testimonial-slide {
-                will-change: transform;
-              }
-              .line-clamp-6 {
-                display: -webkit-box;
-                -webkit-line-clamp: 6;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-              }
-            `}</style>
+    @keyframes testimonial-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-testimonial-slide {
+  will-change: transform;
+  animation: testimonial-slide var(--duration, 30s) linear infinite;
+  animation-play-state: running;
+}
+
+.group:hover .animate-testimonial-slide {
+  animation-play-state: paused;
+}
+
+  `}</style>
           </div>
         </div>
       </section>

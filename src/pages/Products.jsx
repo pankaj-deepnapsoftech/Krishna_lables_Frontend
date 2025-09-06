@@ -42,6 +42,22 @@ const Products = () => {
     { id: "stickers", name: "Stickers" },
     { id: "cotton bag", name: "Cotton Bag" },
     { id: "Promotional Keys rings", name: "Promotional Key Rings" },
+    { id: "logo patches and badges", name: "Logo Patches And Badges" },
+    { id: "shopping bags", name: "Shopping Bags" },
+    { id: "branding ribbons", name: "Branding Ribbons" },
+    { id: "clothing name", name: "Clothing name" },
+    { id: "clothing tags", name: "clothing Tags" },
+    { id: "brand packaging item", name: "Brand Packaging Item" },
+    { id: "brand sticker", name: "Brand Sticker" },
+    { id: "custom wrapping papers", name: "Custom Wrapping Papers" },
+    { id: "metal badge", name: "Metal Badge" },
+    { id: "custom seal tag ", name: "Custom Seal Tag" },
+    { id: "packaging tape", name: "Packaging Tape" },
+    { id: "custom jewellery tag", name: "Custom Jewellery Tag" },
+    { id: "business card", name: "Business Card" },
+    { id: "paper tag", name: "Paper Tag" },
+    { id: "custom thank you card", name: "Custom Thank You Card" },
+    { id: "pu and leather patche", name: "PU And Leather Patche" },
   ];
 
   const location = useLocation();

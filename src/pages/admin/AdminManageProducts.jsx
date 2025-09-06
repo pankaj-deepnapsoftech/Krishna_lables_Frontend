@@ -63,6 +63,22 @@ const productCategories = [
   { value: "stickers", label: "Stickers" },
   { value: "cotton bag", label: "Cotton Bag" },
   { value: "Promotional Keys rings", label: "Promotional Key Rings" },
+  { value: "logo patches and badges", label: "Logo Patches And Badges" },
+  { value: "shopping bags", label: "Shopping Bags" },
+  { value: "branding ribbons", label: "Branding Ribbons" },
+  { value: "clothing label", label: "Clothing Label" },
+  { value: "clothing tags", label: "clothing Tags" },
+  { value: "brand packaging item", label: "Brand Packaging Item" },
+  { value: "brand sticker", label: "Brand Sticker" },
+  { value: "custom wrapping papers", label: "Custom Wrapping Papers" },
+  { value: "metal badge", label: "Metal Badge" },
+  { value: "custom seal tag ", label: "Custom Seal Tag" },
+  { value: "packaging tape", label: "Packaging Tape" },
+  { value: "custom jewellery tag", label: "Custom Jewellery Tag" },
+  { value: "business card", label: "Business Card" },
+  { value: "paper tag", label: "Paper Tag" },
+  { value: "custom thank you card", label: "Custom Thank You Card" },
+  { value: "pu and leather patche", label: "PU And Leather Patche" },
 ];
 
 const pageVariants = {

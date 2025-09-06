@@ -62,9 +62,13 @@ const BlogDetails = () => {
         <div
           className="prose max-w-none mb-8 text-gray-700"
           style={{ whiteSpace: "pre-line" }}
-        >
-          {blog.content}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: blog.content.replace(
+              /(https?:\/\/[^\s]+)/g,
+              '<a href="$1" target="_blank" class="text-blue-600 underline">$1</a>'
+            ),
+          }}
+        />
       </div>
     </div>
   );
